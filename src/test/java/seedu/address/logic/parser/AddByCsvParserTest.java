@@ -1,16 +1,17 @@
 package seedu.address.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import seedu.address.logic.commands.AddByCsvCommand;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
