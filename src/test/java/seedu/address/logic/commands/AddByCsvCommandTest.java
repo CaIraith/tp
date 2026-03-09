@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BOB;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
-import seedu.address.testutil.PersonBuilder;
 
 /**
  * Tests for {@code AddByCsvCommand}.
@@ -39,9 +40,7 @@ public class AddByCsvCommandTest {
     @Test
     public void execute_personsAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Person alice = new PersonBuilder().withName("Alice").build();
-        Person bob = new PersonBuilder().withName("Bob").build();
-        List<Person> personsToAdd = Arrays.asList(alice, bob);
+        List<Person> personsToAdd = Arrays.asList(ALICE, BOB);
 
         CommandResult commandResult = new AddByCsvCommand(personsToAdd).execute(modelStub);
 
@@ -53,8 +52,7 @@ public class AddByCsvCommandTest {
     @Test
     public void execute_singlePerson_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Person alice = new PersonBuilder().withName("Alice").build();
-        List<Person> personsToAdd = Collections.singletonList(alice);
+        List<Person> personsToAdd = Collections.singletonList(ALICE);
 
         CommandResult commandResult = new AddByCsvCommand(personsToAdd).execute(modelStub);
 
@@ -65,28 +63,25 @@ public class AddByCsvCommandTest {
 
     @Test
     public void execute_duplicatePerson_throwsCommandException() {
-        Person alice = new PersonBuilder().withName("Alice").build();
-        List<Person> personsToAdd = Collections.singletonList(alice);
+        List<Person> personsToAdd = Collections.singletonList(ALICE);
         AddByCsvCommand command = new AddByCsvCommand(personsToAdd);
-        ModelStub modelStub = new ModelStubWithPerson(alice);
+        ModelStub modelStub = new ModelStubWithPerson(ALICE);
 
         assertThrows(CommandException.class,
                 String.format(AddByCsvCommand.MESSAGE_DUPLICATE_PERSON,
-                        Messages.format(alice)), () -> command.execute(modelStub));
+                        Messages.format(ALICE)), () -> command.execute(modelStub));
     }
 
     @Test
     public void equals() {
-        Person alice = new PersonBuilder().withName("Alice").build();
-        Person bob = new PersonBuilder().withName("Bob").build();
-        AddByCsvCommand addAliceCommand = new AddByCsvCommand(Collections.singletonList(alice));
-        AddByCsvCommand addBobCommand = new AddByCsvCommand(Collections.singletonList(bob));
+        AddByCsvCommand addAliceCommand = new AddByCsvCommand(Collections.singletonList(ALICE));
+        AddByCsvCommand addBobCommand = new AddByCsvCommand(Collections.singletonList(BOB));
 
         // same object -> returns true
         assertTrue(addAliceCommand.equals(addAliceCommand));
 
         // same values -> returns true
-        AddByCsvCommand addAliceCommandCopy = new AddByCsvCommand(Collections.singletonList(alice));
+        AddByCsvCommand addAliceCommandCopy = new AddByCsvCommand(Collections.singletonList(ALICE));
         assertTrue(addAliceCommand.equals(addAliceCommandCopy));
 
         // different types -> returns false
@@ -101,8 +96,7 @@ public class AddByCsvCommandTest {
 
     @Test
     public void toStringMethod() {
-        Person alice = new PersonBuilder().withName("Alice").build();
-        List<Person> personsToAdd = Collections.singletonList(alice);
+        List<Person> personsToAdd = Collections.singletonList(ALICE);
         AddByCsvCommand command = new AddByCsvCommand(personsToAdd);
         String expected = AddByCsvCommand.class.getCanonicalName()
                 + "{personsToAdd=" + personsToAdd + "}";

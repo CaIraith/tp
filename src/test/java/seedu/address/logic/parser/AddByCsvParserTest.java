@@ -3,6 +3,9 @@ package seedu.address.logic.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.testutil.TypicalPersons.CARL;
+import static seedu.address.testutil.TypicalPersons.HOON;
+import static seedu.address.testutil.TypicalPersons.IDA;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,11 +42,8 @@ public class AddByCsvParserTest {
         Person benson = new PersonBuilder().withName("Benson Meier").withPhone("98765432")
                 .withEmail("johnd@example.com").withAddress("311 Clementi Ave 2 #02-25")
                 .withTags("owesMoney", "friends").build();
-        Person carl = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
-                .withEmail("heinz@example.com").withAddress("wall street")
-                .withTags().build();
 
-        List<Person> expectedPersons = Arrays.asList(alice, benson, carl);
+        List<Person> expectedPersons = Arrays.asList(alice, benson, CARL);
         assertEquals(new AddByCsvCommand(expectedPersons), result);
     }
 
@@ -53,14 +53,7 @@ public class AddByCsvParserTest {
 
         AddByCsvCommand result = parser.parse(" " + filePath);
 
-        Person hoon = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
-                .withEmail("stefan@example.com").withAddress("little india")
-                .withTags().build();
-        Person ida = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
-                .withEmail("hans@example.com").withAddress("chicago ave")
-                .withTags().build();
-
-        List<Person> expectedPersons = Arrays.asList(hoon, ida);
+        List<Person> expectedPersons = Arrays.asList(HOON, IDA);
         assertEquals(new AddByCsvCommand(expectedPersons), result);
     }
 
@@ -157,11 +150,8 @@ public class AddByCsvParserTest {
         Person benson = new PersonBuilder().withName("Benson Meier").withPhone("98765432")
                 .withEmail("johnd@example.com").withAddress("311 Clementi Ave 2 #02-25")
                 .withTags("owesMoney", "friends").build();
-        Person carl = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
-                .withEmail("heinz@example.com").withAddress("wall street")
-                .withTags().build();
 
-        List<Person> expectedPersons = Arrays.asList(alice, benson, carl);
+        List<Person> expectedPersons = Arrays.asList(alice, benson, CARL);
         assertEquals(new AddByCsvCommand(expectedPersons), result);
     }
 
