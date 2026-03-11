@@ -72,7 +72,6 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
-
 ### Adding a person: `add`
 
 Adds a person to the address book.
