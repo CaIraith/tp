@@ -327,9 +327,9 @@ Use case ends.
 
 **Extensions**
 
-1a. HireLens detects missing or invalid data.  
-1a1. HireLens informs the user of the error made and requests corrected information.  
-1a2. User enters corrected data.  
+1a. HireLens detects missing or invalid data.
+1a1. HireLens informs the user of the error made and requests corrected information.
+1a2. User enters corrected data.
 Steps 1a1-1a2 are repeated until the data entered are correct.
 
 Use case resumes from step 2.
