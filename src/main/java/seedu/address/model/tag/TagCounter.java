@@ -1,7 +1,13 @@
 package seedu.address.model.tag;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import javafx.collections.ObservableList;
+import seedu.address.model.AddressBook;
+import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 
@@ -13,6 +19,10 @@ public class TagCounter {
 
     public TagCounter() {
         tagCounter = new HashMap<Tag, Integer>();
+    }
+
+    public TagCounter(ReadOnlyAddressBook addressBook) {
+        this.resetTagCounter(addressBook.getPersonList());
     }
 
     /**
@@ -36,12 +46,12 @@ public class TagCounter {
     /**
      * Adds all {@code Tag}s in a {@code Person} to the {@code TagCounter}.
      */
-    public void incrementTags(Person person, UniquePersonList uniquePersonList) {
+    public void incrementTags(Person person, ObservableList<Person> personList) {
         for (Tag tag : person.getTags()) {
             this.incrementTag(tag);
         }
         if (!isValid()) {
-            resetTagCounter(uniquePersonList);
+            resetTagCounter(personList);
         }
     }
 
@@ -62,12 +72,12 @@ public class TagCounter {
     /**
      * Removes all {@code Tag}s in a {@code Person} from the {@code TagCounter}.
      */
-    public void decrementTags(Person person, UniquePersonList uniquePersonList) {
+    public void decrementTags(Person person, ObservableList<Person> personList) {
         for (Tag tag : person.getTags()) {
             this.decrementTag(tag);
         }
         if (!isValid()) {
-            resetTagCounter(uniquePersonList);
+            resetTagCounter(personList);
         }
     }
 
@@ -75,10 +85,10 @@ public class TagCounter {
      * Resets the {@code TagCounter} using an {@code UniquePersonList} by counting all tags present. This method is to
      * be called as a last resort to reset the TagCounter to the correct state should any errors occur.
      */
-    public void resetTagCounter(UniquePersonList uniquePersonList) {
+    public void resetTagCounter(ObservableList<Person> personList) {
         tagCounter = new HashMap<Tag, Integer>();
-        for (Person person : uniquePersonList.asUnmodifiableObservableList()) {
-            this.incrementTags(person, uniquePersonList);
+        for (Person person : personList) {
+            this.incrementTags(person, personList);
         }
     }
 
@@ -92,6 +102,28 @@ public class TagCounter {
             }
         }
         return true;
+    }
+
+    /**
+     * Checks if the {@Code TagCounter} is empty.
+     */
+    public boolean isEmpty() {
+        return tagCounter.isEmpty();
+    }
+
+    /**
+     * Returns the tags in descending order of frequency, along with their counts.
+     */
+    public String displayDescendingOrder() {
+        return tagCounter.entrySet().stream()
+                .sorted(Map.Entry.<Tag, Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ))
+                .toString();
     }
 
     @Override

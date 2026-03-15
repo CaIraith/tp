@@ -1,6 +1,8 @@
 package seedu.address.model.tag;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
@@ -15,13 +17,11 @@ import seedu.address.model.person.UniquePersonList;
 import seedu.address.testutil.PersonBuilder;
 
 public class TagCounterTest {
-
-
     @Test
     public void toStringMethod() {
         TagCounter tagCounter = new TagCounter();
         Person p = new PersonBuilder().withTags("friend", "colleague").build();
-        tagCounter.incrementTags(p, new UniquePersonList());
+        tagCounter.incrementTags(p, new UniquePersonList().asUnmodifiableObservableList());
         String result = tagCounter.toString();
         assertEquals("{[friend]=1, [colleague]=1}", result);
     }
@@ -36,18 +36,18 @@ public class TagCounterTest {
         assertEquals(new TagCounter(tagMap), tagCounter);
 
         // Addition of person with 1 tag
-        tagCounter.incrementTags(ALICE, uniquePersonList);
+        tagCounter.incrementTags(ALICE, uniquePersonList.asUnmodifiableObservableList());
         tagMap.put(new Tag("friends"), 1);
         assertEquals(new TagCounter(tagMap), tagCounter);
 
         // Addition of person with multiple tags
-        tagCounter.incrementTags(BENSON, uniquePersonList);
+        tagCounter.incrementTags(BENSON, uniquePersonList.asUnmodifiableObservableList());
         tagMap.put(new Tag("friends"), 2);
         tagMap.put(new Tag("owesMoney"), 1);
         assertEquals(new TagCounter(tagMap), tagCounter);
 
         // Addition of person with no tags
-        tagCounter.incrementTags(CARL, uniquePersonList);
+        tagCounter.incrementTags(CARL, uniquePersonList.asUnmodifiableObservableList());
         assertEquals(new TagCounter(tagMap), tagCounter);
     }
 
@@ -58,24 +58,24 @@ public class TagCounterTest {
         tagMap.put(new Tag("owesMoney"), 1);
         TagCounter tagCounter = new TagCounter();
         UniquePersonList uniquePersonList = new UniquePersonList();
-        tagCounter.incrementTags(ALICE, uniquePersonList);
-        tagCounter.incrementTags(BENSON, uniquePersonList);
-        tagCounter.incrementTags(CARL, uniquePersonList);
+        tagCounter.incrementTags(ALICE, uniquePersonList.asUnmodifiableObservableList());
+        tagCounter.incrementTags(BENSON, uniquePersonList.asUnmodifiableObservableList());
+        tagCounter.incrementTags(CARL, uniquePersonList.asUnmodifiableObservableList());
 
         // Check TagCounter is correct initially
         assertEquals(new TagCounter(tagMap), tagCounter);
 
         // Decrement of person with no tags
-        tagCounter.incrementTags(CARL, uniquePersonList);
+        tagCounter.incrementTags(CARL, uniquePersonList.asUnmodifiableObservableList());
         assertEquals(new TagCounter(tagMap), tagCounter);
 
         // Decrement of person with 1 tag
-        tagCounter.decrementTags(ALICE, uniquePersonList);
+        tagCounter.decrementTags(ALICE, uniquePersonList.asUnmodifiableObservableList());
         tagMap.put(new Tag("friends"), 1);
         assertEquals(new TagCounter(tagMap), tagCounter);
 
         // Decrement of person with multiple tags
-        tagCounter.decrementTags(BENSON, uniquePersonList);
+        tagCounter.decrementTags(BENSON, uniquePersonList.asUnmodifiableObservableList());
         tagMap.clear();
         assertEquals(new TagCounter(tagMap), tagCounter);
 
@@ -94,7 +94,7 @@ public class TagCounterTest {
 
         TagCounter tagCounter = new TagCounter();
 
-        tagCounter.resetTagCounter(uniquePersonList);
+        tagCounter.resetTagCounter(uniquePersonList.asUnmodifiableObservableList());
         assertEquals(new TagCounter(tagMap), tagCounter);
     }
 
@@ -110,7 +110,7 @@ public class TagCounterTest {
         tagMap.put(new Tag("owesMoney"), 1);
 
         TagCounter tagCounter = new TagCounter();
-        tagCounter.decrementTags(BENSON, uniquePersonList);
+        tagCounter.decrementTags(BENSON, uniquePersonList.asUnmodifiableObservableList());
 
         assertEquals(new TagCounter(tagMap), tagCounter);
     }
@@ -130,8 +130,29 @@ public class TagCounterTest {
         secondTagMap.put(new Tag("friends"), -1);
 
         TagCounter tagCounter = new TagCounter(secondTagMap);
-        tagCounter.incrementTags(BENSON, uniquePersonList);
+        tagCounter.incrementTags(BENSON, uniquePersonList.asUnmodifiableObservableList());
 
         assertEquals(new TagCounter(tagMap), tagCounter);
+    }
+
+    @Test
+    public void isEmpty() {
+        UniquePersonList uniquePersonList = new UniquePersonList();
+        TagCounter tagCounter = new TagCounter();
+        assertTrue(tagCounter.isEmpty());
+
+        tagCounter.incrementTags(BENSON, uniquePersonList.asUnmodifiableObservableList());
+        assertFalse(tagCounter.isEmpty());
+    }
+
+    @Test
+    public void displayDescendingOrder() {
+        HashMap<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        tagMap.put(new Tag("python"), 1);
+        tagMap.put(new Tag("java"), 3);
+        tagMap.put(new Tag("C"), 2);
+
+        TagCounter tagCounter = new TagCounter(tagMap);
+        assertEquals("{[java]=3, [C]=2, [python]=1}", tagCounter.displayDescendingOrder());
     }
 }
