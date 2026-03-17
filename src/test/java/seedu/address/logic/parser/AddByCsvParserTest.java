@@ -87,6 +87,12 @@ public class AddByCsvParserTest {
     }
 
     @Test
+    public void parse_emptyNoContentCsv_failure() {
+        String filePath = TEST_DATA_FOLDER.resolve("emptyNoContent.csv").toString();
+        assertParseFailure(parser, " " + filePath, AddByCsvParser.MESSAGE_EMPTY_CSV);
+    }
+
+    @Test
     public void parse_headerOnlyCsv_failure() {
         String filePath = TEST_DATA_FOLDER.resolve("headerOnly.csv").toString();
         assertParseFailure(parser, " " + filePath, AddByCsvParser.MESSAGE_EMPTY_CSV);
@@ -95,6 +101,24 @@ public class AddByCsvParserTest {
     @Test
     public void parse_invalidHeader_failure() {
         String filePath = TEST_DATA_FOLDER.resolve("invalidHeader.csv").toString();
+        assertParseFailure(parser, " " + filePath, AddByCsvParser.MESSAGE_INVALID_CSV_HEADER);
+    }
+
+    @Test
+    public void parse_invalidRequiredHeaderWithEnoughColumns_failure() {
+        String filePath = TEST_DATA_FOLDER.resolve("invalidRequiredHeaderWithEnoughColumns.csv").toString();
+        assertParseFailure(parser, " " + filePath, AddByCsvParser.MESSAGE_INVALID_CSV_HEADER);
+    }
+
+    @Test
+    public void parse_invalidSixthHeader_failure() {
+        String filePath = TEST_DATA_FOLDER.resolve("invalidSixthHeader.csv").toString();
+        assertParseFailure(parser, " " + filePath, AddByCsvParser.MESSAGE_INVALID_CSV_HEADER);
+    }
+
+    @Test
+    public void parse_tooManyHeaders_failure() {
+        String filePath = TEST_DATA_FOLDER.resolve("tooManyHeaders.csv").toString();
         assertParseFailure(parser, " " + filePath, AddByCsvParser.MESSAGE_INVALID_CSV_HEADER);
     }
 
