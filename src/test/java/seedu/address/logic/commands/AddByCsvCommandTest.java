@@ -186,6 +186,16 @@ public class AddByCsvCommandTest {
         public String getTagCounterDescription() {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void recordCommand(UndoableCommand undoableCommand) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void undo() throws CommandException {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

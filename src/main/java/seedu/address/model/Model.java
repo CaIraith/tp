@@ -5,6 +5,8 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.logic.commands.UndoableCommand;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
 
 /**
@@ -94,4 +96,8 @@ public interface Model {
      * Returns a list of the tags in the model, along with their frequencies in descending order.
      */
     String getTagCounterDescription();
+
+    void recordCommand(UndoableCommand undoableCommand);
+
+    void undo() throws CommandException;
 }

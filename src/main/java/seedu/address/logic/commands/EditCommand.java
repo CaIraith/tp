@@ -33,7 +33,7 @@ import seedu.address.model.tag.Tag;
 /**
  * Edits the details of an existing person in the address book.
  */
-public class EditCommand extends Command {
+public class EditCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "edit";
 
@@ -64,6 +64,9 @@ public class EditCommand extends Command {
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
 
+    private Person editedPerson;
+    private Person originalPerson;
+
     /**
      * @param index of the person in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person with
@@ -85,17 +88,22 @@ public class EditCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        originalPerson = lastShownList.get(index.getZeroBased());
+        editedPerson = createEditedPerson(originalPerson, editPersonDescriptor);
 
         try {
-            model.setPerson(personToEdit, editedPerson);
+            model.setPerson(originalPerson, editedPerson);
         } catch (DuplicatePersonException e) {
             throw new CommandException(e.getMessage());
         }
 
         model.resetFilteredPersonList();
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)));
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.setPerson(editedPerson, originalPerson);
     }
 
     /**
@@ -138,7 +146,6 @@ public class EditCommand extends Command {
                 .add("editPersonDescriptor", editPersonDescriptor)
                 .toString();
     }
-
     /**
      * Stores the details to edit the person with. Each non-empty field value will replace the
      * corresponding field value of the person.
