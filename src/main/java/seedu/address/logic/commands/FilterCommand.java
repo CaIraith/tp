@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.Optional;
+
 import java.util.function.Predicate;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -10,6 +12,8 @@ import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsTagsPredicate;
+import seedu.address.ui.UiAction;
+import seedu.address.ui.content.TagCountsContent;
 
 /**
  * Finds all candidates in the candidate book containing the tags specified
@@ -38,8 +42,8 @@ public class FilterCommand extends UndoableCommand {
         previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size())
-        );
+                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 
     @Override

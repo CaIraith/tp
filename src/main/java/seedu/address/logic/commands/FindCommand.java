@@ -4,10 +4,14 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Predicate;
 
+import java.util.Optional;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.ui.UiAction;
+import seedu.address.ui.content.TagCountsContent;
 import seedu.address.model.person.Person;
 
 /**
@@ -36,7 +40,8 @@ public class FindCommand extends UndoableCommand {
         previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
-                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
+                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 
     @Override
