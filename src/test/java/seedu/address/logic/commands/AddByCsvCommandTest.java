@@ -25,7 +25,9 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
+import seedu.address.model.tag.TagCounter;
 
 /**
  * Tests for {@code AddByCsvCommand}.
@@ -183,7 +185,42 @@ public class AddByCsvCommandTest {
         }
 
         @Override
-        public String getTagCounterDescription() {
+        public boolean hasOutlet(Outlet outlet) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteOutlet(Outlet target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addOutlet(Outlet outlet) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setOutlet(Outlet target, Outlet editedOutlet) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Outlet> getFilteredOutletList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredOutletList(Predicate<Outlet> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void resetFilteredOutletList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public TagCounter getTagCounter() {
             throw new AssertionError("This method should not be called.");
         }
     }
