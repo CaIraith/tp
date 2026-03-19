@@ -1,16 +1,17 @@
 package seedu.address.ui;
 
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.ast.Node;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 
@@ -39,7 +40,8 @@ public class HelpWindow extends UiPart<Stage> {
     private Button copyButton;
 
     @FXML
-    private TextArea helpMessage;
+    private WebView helpMessage;
+
 
     /**
      * Creates a new HelpWindow.
@@ -48,10 +50,37 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public HelpWindow(Stage root) {
         super(FXML, root);
+        String markdown = loadUserGuide();
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(markdown);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        String html = renderer.render(document);
+        helpMessage.getEngine().loadContent(html);
+
+        String docsPath = new File("docs").toURI().toString();
+
+        String styled = "<html><head>"
+                + "<base href='" + docsPath + "/'>"
+                + "<style>"
+                + "body { background-color: #454545; color: white; font-family: sans-serif; padding: 10px; }"
+                + "code { background-color: #333; padding: 2px 4px; }"
+                + "img { max-width: 100%; }"
+                + "</style></head><body>"
+                + html
+                + "</body></html>";
+
+        helpMessage.getEngine().loadContent(styled);
+    }
+
+    // No longer required.
+    /*
+    public HelpWindow(Stage root) {
+        super(FXML, root);
         helpMessage.setText(loadUserGuide());
         helpMessage.setWrapText(true);
         helpMessage.setEditable(false);
     }
+    */
 
     /**
      * Creates a new HelpWindow.
@@ -115,49 +144,6 @@ public class HelpWindow extends UiPart<Stage> {
      * runs extractUserGuide to extract UserGuide from START_HEADING to END_HEADING
      * @return
      */
-
-    /*
-    private String loadUserGuide() {
-        try {
-            InputStream is = new FileInputStream(USERGUIDE_PATH);
-
-            List<String> lines = new BufferedReader(new InputStreamReader(is))
-                    .lines()
-                    .collect(Collectors.toCollection(ArrayList::new));
-
-            // Find the start line index
-            int start = 0;
-            for (int i = 0; i < lines.size(); i++) {
-                if (lines.get(i).startsWith(START_HEADING)) {
-                    start = i;
-                    break;
-                }
-            }
-
-            // Find the end line index, or use end of file
-            int end = lines.size();
-            if (END_HEADING != null) {
-                for (int i = start + 1; i < lines.size(); i++) {
-                    if (lines.get(i).startsWith(END_HEADING)) {
-                        end = i;
-                        break;
-                    }
-                }
-            }
-
-            return lines.subList(start, end)
-                    .stream()
-                    .collect(Collectors.joining("\n"));
-
-        } catch (Exception e) {
-            logger.warning("Failed to load UserGuide.md from path '"
-                    + USERGUIDE_PATH + "': " + e.getMessage());
-            return "Could not load user guide.\nVisit: " + USERGUIDE_URL;
-        }
-    }
-    */
-
-
     private String loadUserGuide() {
         try {
 
@@ -166,7 +152,8 @@ public class HelpWindow extends UiPart<Stage> {
             BufferedReader reader = new BufferedReader(inputStreamReader);
 
             try {
-                return extractUserGuide(reader, START_HEADING, END_HEADING);
+                UserGuideParser parser = new UserGuideParser();
+                return parser.extractUserGuide(reader, START_HEADING, END_HEADING);
             } finally {
                 reader.close();
             }
@@ -180,8 +167,9 @@ public class HelpWindow extends UiPart<Stage> {
 
     }
 
+    /* Not easily testable with JavaFX. Needs to be moved out.
     // ExtractUserGuide is a helper method used to contain the file reading logic for easier testing
-    private String extractUserGuide(BufferedReader reader, String startString, String endString) throws IOException {
+    String extractUserGuide(BufferedReader reader, String startString, String endString) throws IOException {
         ArrayList<String> lines = new ArrayList<>();
         String line = reader.readLine();
 
@@ -227,9 +215,7 @@ public class HelpWindow extends UiPart<Stage> {
 
         return result.toString();
 
-    }
-
-
+    }*/
 
 
     /**
