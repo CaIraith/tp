@@ -13,6 +13,7 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Person;
+import seedu.address.model.tag.TagCombo;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -31,6 +32,7 @@ public class MainWindow extends UiPart<Stage> {
     private PersonListPanel personListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private TagComboPanel tagComboPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -52,6 +54,9 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private VBox rightDisplayPlaceHolder;
+
+    @FXML
+    private VBox tagComboDisplayPlaceHolder;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -79,12 +84,17 @@ public class MainWindow extends UiPart<Stage> {
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
-        OutletListPanel outletListPanel = new OutletListPanel(logic.getFilteredOutletList());
-        outletListPanelPlaceholder.getChildren().add(outletListPanel.getRoot());
         personListPanel.setOnPersonSelected((person, header) -> {
             DetailedPersonCard card = new DetailedPersonCard(person, header);
             detailedPersonPlaceholder.getChildren().setAll(card.getRoot());
+            showDetails();
         });
+
+        OutletListPanel outletListPanel = new OutletListPanel(logic.getFilteredOutletList());
+        outletListPanelPlaceholder.getChildren().add(outletListPanel.getRoot());
+
+        tagComboPanel = new TagComboPanel(logic.getTagComboList());
+        tagComboDisplayPlaceHolder.getChildren().add(tagComboPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -152,6 +162,26 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.hide();
     }
 
+    /**
+     * Makes the TagComboPanel visible on the right pane.
+     */
+    private void showTagCombo() {
+        tagComboDisplayPlaceHolder.setVisible(true);
+        tagComboDisplayPlaceHolder.setManaged(true);
+        rightDisplayPlaceHolder.setVisible(false);
+        rightDisplayPlaceHolder.setManaged(false);
+    }
+
+    /**
+     * Makes the rightDisplayPlaceHolder visible on the right pane.
+     */
+    private void showDetails() {
+        tagComboDisplayPlaceHolder.setVisible(false);
+        tagComboDisplayPlaceHolder.setManaged(false);
+        rightDisplayPlaceHolder.setVisible(true);
+        rightDisplayPlaceHolder.setManaged(true);
+    }
+
     public PersonListPanel getPersonListPanel() {
         return personListPanel;
     }
@@ -176,7 +206,12 @@ public class MainWindow extends UiPart<Stage> {
             }
 
             if (commandResult.getUiAction() == UiAction.UPDATE_RIGHT_PANE) {
+                showDetails();
                 commandResult.getContent().get().render(rightDisplayPlaceHolder);
+            }
+
+            if (commandResult.getUiAction() == UiAction.SHOW_TAG_COMBO) {
+                showTagCombo();
             }
 
             return commandResult;

@@ -37,7 +37,7 @@ public class TagCountsPanel extends UiPart<Region> {
      */
     private void fillScrollPane() {
         Label header = new Label("Tag Counts");
-        header.getStyleClass().add("extra-big-label");
+        header.getStyleClass().add("small_index_label");
 
         Region firstSpacer = new Region();
         firstSpacer.setPrefHeight(8);

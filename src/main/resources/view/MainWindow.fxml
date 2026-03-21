@@ -86,10 +86,10 @@
         </VBox>
         <VBox fx:id="rightDisplayPlaceHolder" HBox.hgrow="ALWAYS" minWidth="350" prefWidth="350" maxWidth="350"
               styleClass="pane-with-border">
-          <VBox fx:id="tagComboDisplayPlaceHolder" VBox.vgrow="NEVER" minHeight="0" prefHeight="0" maxHeight="0">
-
+          <VBox fx:id="tagComboDisplayPlaceHolder" VBox.vgrow="ALWAYS">
+            <Label text="Tag Combos" styleClass="small_index_label" style="-fx-padding: 8 10 4 10;"/>
           </VBox>
-          <VBox fx:id="rightDisplayPlaceHolder" VBox.vgrow="ALWAYS">
+          <VBox fx:id="rightDisplayPlaceHolder" VBox.vgrow="ALWAYS" visible="false" managed="false">
             <StackPane fx:id="detailedPersonPlaceholder" VBox.vgrow="ALWAYS" styleClass="pane-with-border">
               <Label text="Select a candidate to view details" styleClass="small_index_label" />
             </StackPane>

@@ -15,8 +15,6 @@ public class OutletCard extends UiPart<Region> {
     public final Outlet outlet;
 
     @FXML
-    private HBox cardPane;
-    @FXML
     private Label id;
     @FXML
     private Label name;
