@@ -18,15 +18,23 @@ public class AssignOutletCommandParser implements Parser<AssignOutletCommand> {
      */
     public AssignOutletCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignOutletCommand.MESSAGE_USAGE));
+        }
         String[] tokens = trimmedArgs.split("\\s+");
 
-        if (tokens.length != 2) {
+        if (tokens.length != 1 && tokens.length != 2) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignOutletCommand.MESSAGE_USAGE));
         }
 
         try {
             Index candidateIndex = ParserUtil.parseIndex(tokens[0]);
+            if (tokens.length == 1) {
+                return new AssignOutletCommand(candidateIndex);
+            }
+
             Index outletIndex = ParserUtil.parseIndex(tokens[1]);
             return new AssignOutletCommand(candidateIndex, outletIndex);
         } catch (ParseException pe) {
