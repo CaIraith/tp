@@ -15,6 +15,7 @@ import seedu.address.logic.commands.AddOutletCommand;
 import seedu.address.logic.commands.AssignOutletCommand;
 import seedu.address.logic.commands.DeleteOutletCommand;
 import seedu.address.logic.commands.ListOutletsCommand;
+import seedu.address.logic.commands.UnassignOutletCommand;
 import seedu.address.testutil.OutletBuilder;
 
 public class OutletCommandParserTest {
@@ -36,6 +37,11 @@ public class OutletCommandParserTest {
     @Test
     public void parse_assignCommand_success() {
         assertParseSuccess(parser, "assign 1 2", new AssignOutletCommand(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
+    }
+
+    @Test
+    public void parse_unassignCommand_success() {
+        assertParseSuccess(parser, "unassign 1", new UnassignOutletCommand(INDEX_FIRST_PERSON));
     }
 
     @Test

@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
@@ -12,6 +13,8 @@ import seedu.address.model.Model;
 import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.ui.UiAction;
+import seedu.address.ui.content.PersonContent;
 
 /**
  * Assigns an outlet to a candidate.
@@ -25,7 +28,6 @@ public class AssignOutletCommand extends Command {
             + "Example: outlet " + COMMAND_WORD + " 1 2";
 
     public static final String MESSAGE_SUCCESS = "Assigned %1$s to outlet %2$s";
-
     private final Index candidateIndex;
     private final Index outletIndex;
 
@@ -67,7 +69,9 @@ public class AssignOutletCommand extends Command {
 
         model.resetFilteredPersonList();
         return new CommandResult(
-                String.format(MESSAGE_SUCCESS, personToAssign.getName(), outletToAssign.getOutletName()));
+                String.format(MESSAGE_SUCCESS, personToAssign.getName(), outletToAssign.getOutletName()),
+                UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new PersonContent(assignedPerson, "Candidate #" + candidateIndex.getOneBased())));
     }
 
     @Override
