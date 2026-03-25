@@ -52,9 +52,7 @@ public class UniqueTagComboList implements Iterable<TagCombo> {
         if (!contains(toRemove)) {
             throw new TagComboNotFoundException();
         }
-        if (!internalMap.containsKey(toRemove.getName())) {
-            throw new TagComboNotFoundException();
-        }
+        assert internalMap.containsKey(toRemove.getName());
         internalMap.remove(toRemove.getName());
         internalList.remove(toRemove);
     }

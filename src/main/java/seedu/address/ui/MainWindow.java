@@ -85,7 +85,7 @@ public class MainWindow extends UiPart<Stage> {
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
         personListPanel.setOnPersonSelected((person, header) -> {
             DetailedPersonCard card = new DetailedPersonCard(person, header);
-            detailedPersonPlaceholder.getChildren().setAll(card.getRoot());
+            rightDisplayPlaceHolder.getChildren().setAll(card.getRoot());
             showDetails();
         });
 
