@@ -22,8 +22,9 @@ public class CompareCommandTest {
 
     private final Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
-    // Unit tests for correctness
+    // Valid input tests
 
+    // Valid indices (e.g. 1, 2) -> UI execution
     @Test
     public void execute_validIndices_successWithCorrectUiAction() throws CommandException {
         Index firstIndex = Index.fromOneBased(1);
@@ -35,18 +36,8 @@ public class CompareCommandTest {
         assertEquals(UiAction.UPDATE_RIGHT_PANE, result.getUiAction());
     }
 
-    @Test
-    public void execute_validIndices_successMessageContainsBothIndices() throws CommandException {
-        Index firstIndex = Index.fromOneBased(1);
-        Index secondIndex = Index.fromOneBased(2);
 
-        CompareCommand command = new CompareCommand(firstIndex, secondIndex);
-        CommandResult result = command.execute(model);
-
-        String expectedMessage = String.format(MESSAGE_COMPARE_SUCCESS, 1, 2);
-        assertEquals(expectedMessage, result.getFeedbackToUser());
-    }
-
+    // Valid indices (e.g. 1, 2) -> UI does have the content
     @Test
     public void execute_validIndices_contentIsComparisonContent() throws CommandException {
         Index firstIndex = Index.fromOneBased(1);
@@ -59,6 +50,7 @@ public class CompareCommandTest {
         assertTrue(result.getContent().get() instanceof ComparisonContent);
     }
 
+    // Ensure the content presents in the correct order.
     @Test
     public void execute_indicesInReverseOrder_successWithCorrectHeaders() throws CommandException {
         Index firstIndex = Index.fromOneBased(3);
@@ -71,6 +63,7 @@ public class CompareCommandTest {
         assertEquals(expectedMessage, result.getFeedbackToUser());
     }
 
+    // Test the very end of the listpane's indices to check for index errors.
     @Test
     public void execute_lastTwoValidIndices_success() throws CommandException {
         int listSize = model.getFilteredPersonList().size();
