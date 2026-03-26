@@ -78,7 +78,6 @@ shadowJar {
 }
 
 run {
-    jvmArgs '=ea'
     enableAssertions = true
 }
 
