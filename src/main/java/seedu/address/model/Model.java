@@ -5,12 +5,12 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.TagCombo;
+import seedu.address.model.tag.TagComboName;
 import seedu.address.model.tag.TagCounter;
 
 /**
@@ -148,6 +148,11 @@ public interface Model {
      * The given {@code TagCombo} must not already exist in the {@code AddressBook}.
      */
     void addTagCombo(TagCombo tagCombo);
+
+    /**
+     * Gets the TagCombo associated with the tagComboName.
+     */
+    TagCombo getTagCombo(TagComboName tagComboName);
 
     /** Returns an unmodifiable view of the filtered outlet list */
     ObservableList<Outlet> getFilteredOutletList();
