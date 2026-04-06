@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_POSTAL_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -47,6 +48,7 @@ public class AddCommand extends UndoableCommand {
     public static final String RIGHT_PANE_HEADER = "NEW CANDIDATE ADDED";
 
     private final Person toAdd;
+    private Predicate<? super Person> previousPredicate;
 
     /**
      * Creates an AddCommand to add the specified {@code Person}
@@ -63,6 +65,7 @@ public class AddCommand extends UndoableCommand {
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
+        previousPredicate = model.getFilteredPersonPredicate();
         model.addPerson(toAdd);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)),
@@ -93,6 +96,7 @@ public class AddCommand extends UndoableCommand {
     @Override
     public void undo(Model model) {
         model.deletePerson(toAdd);
+        model.setFilteredPersonPredicate(previousPredicate);
     }
 
     @Override
