@@ -66,7 +66,8 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 
 ### Viewing help : `help`
 
-Displays the user guide.
+Displays the user guide. For future bug-fixing: to align the colour with the current LightTheme and fully render the
+markdown text.
 
 Format: `help`
 
@@ -233,6 +234,15 @@ Format: `undo`
 * `outlet unassign` Reassigns the `Person` to the previous `Outlet`.
 * `list`, `filter`, `find` Returns to the previous view of the Address Book.
 * `clear` Adds all `Person`s deleted.
+
+### Comparing Candidates: `compare INDEX_1 INDEX_2`
+
+Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
+Information clears when another action takes up the right-hand-side pane.
+
+Format: `compare INDEX_1 INDEX_2`
+
+Example: `compare 1 12` selects candidate numbered 1 and 12 in the list for comparison
 
 ### Redoing previous action : `undo`
 
