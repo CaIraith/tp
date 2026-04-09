@@ -41,7 +41,7 @@ public class EditOutletCommand extends UndoableCommand {
 
     public static final String MESSAGE_EDIT_OUTLET_SUCCESS = "Edited Outlet: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_OUTLET = "This outlet already exists in the address book";
+    public static final String MESSAGE_DUPLICATE_OUTLET = "This outlet already exists in the address book.";
     private final Index index;
     private final EditOutletCommand.EditOutletDescriptor editOutletDescriptor;
 
@@ -49,8 +49,8 @@ public class EditOutletCommand extends UndoableCommand {
     private Outlet originalOutlet;
 
     /**
-     * @param index of the person in the outlet list to edit
-     * @param editOutletDescriptor details to edit the person with
+     * @param index of the outlet in the outlet list to edit
+     * @param editOutletDescriptor details to edit the outlet with
      */
     public EditOutletCommand(Index index, EditOutletCommand.EditOutletDescriptor editOutletDescriptor) {
         requireNonNull(index);
@@ -92,7 +92,7 @@ public class EditOutletCommand extends UndoableCommand {
     }
 
     /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
+     * Creates and returns a {@code Outlet} with the details of {@code outletToEdit}
      * edited with {@code editOutletDescriptor}.
      */
     private static Outlet createEditedOutlet(Outlet outletToEdit, EditOutletDescriptor editOutletDescriptor) {
@@ -130,8 +130,8 @@ public class EditOutletCommand extends UndoableCommand {
     }
 
     /**
-     * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person.
+     * Stores the details to edit the outlet with. Each non-empty field value will replace the
+     * corresponding field value of the outlet.
      */
     public static class EditOutletDescriptor {
         private OutletName name;
@@ -142,7 +142,6 @@ public class EditOutletCommand extends UndoableCommand {
 
         /**
          * Copy constructor.
-         * A defensive copy of {@code tags} is used internally.
          */
         public EditOutletDescriptor(EditOutletCommand.EditOutletDescriptor toCopy) {
             setName(toCopy.name);

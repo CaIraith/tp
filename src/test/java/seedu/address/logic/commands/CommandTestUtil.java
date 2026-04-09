@@ -22,6 +22,7 @@ import seedu.address.model.Model;
 import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.EditOutletDescriptorBuilder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.ui.UiAction;
 import seedu.address.ui.content.RightPaneContent;
@@ -88,6 +89,8 @@ public class CommandTestUtil {
 
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
+    public static final EditOutletCommand.EditOutletDescriptor DESC_ALPHA;
+    public static final EditOutletCommand.EditOutletDescriptor DESC_BETA;
 
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
@@ -98,6 +101,13 @@ public class CommandTestUtil {
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB)
                 .withPostalCode(VALID_POSTAL_CODE_BOB)
                 .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
+    }
+
+    static {
+        DESC_ALPHA = new EditOutletDescriptorBuilder().withName(VALID_OUTLET_NAME_ALPHA)
+                        .withAddress(VALID_OUTLET_ADDRESS_ALPHA).withPostalCode(VALID_OUTLET_POSTAL_CODE_ALPHA).build();
+        DESC_BETA = new EditOutletDescriptorBuilder().withName(VALID_OUTLET_NAME_BETA)
+                        .withAddress(VALID_OUTLET_ADDRESS_BETA).withPostalCode(VALID_OUTLET_POSTAL_CODE_BETA).build();
     }
 
     /**
