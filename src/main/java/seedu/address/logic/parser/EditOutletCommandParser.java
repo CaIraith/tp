@@ -26,7 +26,7 @@ public class EditOutletCommandParser implements Parser<EditOutletCommand> {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditOutletCommand.MESSAGE_USAGE),
-                                                    pe);
+                    pe);
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_ADDRESS, PREFIX_POSTAL_CODE);

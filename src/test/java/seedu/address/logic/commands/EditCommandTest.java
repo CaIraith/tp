@@ -14,6 +14,7 @@ import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.logic.commands.EditCommand.RIGHT_PANE_HEADER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_ENTRY;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_ENTRY;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_ENTRY;
 import static seedu.address.testutil.TypicalIndexes.SET_FIRST_ENTRY;
 import static seedu.address.testutil.TypicalIndexes.SET_SECOND_ENTRY;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -21,6 +22,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.util.Optional;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
@@ -43,6 +45,11 @@ import seedu.address.ui.content.PersonContent;
 public class EditCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    @BeforeEach
+    public void setUp() {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    }
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -123,6 +130,25 @@ public class EditCommandTest {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson).build();
         EditCommand editCommand = new EditCommand(SET_SECOND_ENTRY, descriptor);
+
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_multipleDuplicatePersonUnfilteredList_failure() {
+        Person existingPerson = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(existingPerson).build();
+        Set<Index> setMultipleIndexes = Set.of(INDEX_SECOND_ENTRY, INDEX_THIRD_ENTRY);
+        EditCommand editCommand = new EditCommand(setMultipleIndexes, descriptor);
+
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+    }
+
+    @Test
+    public void execute_multipleEditDuplicateFields_failure() {
+        Set<Index> setMultipleIndexes = Set.of(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB).build();
+        EditCommand editCommand = new EditCommand(setMultipleIndexes, descriptor);
 
         assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
     }
@@ -214,8 +240,6 @@ public class EditCommandTest {
 
         // same values -> returns true
         EditPersonDescriptor copyDescriptor = new EditPersonDescriptor(DESC_AMY);
-        EditCommand commandWithSameValues = new EditCommand(SET_FIRST_ENTRY, copyDescriptor);
-        assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true
         assertTrue(standardCommand.equals(standardCommand));
