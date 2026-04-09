@@ -108,7 +108,7 @@ public class EditOutletCommandTest {
         EditOutletDescriptor descriptor = new EditOutletDescriptorBuilder().withName(VALID_OUTLET_NAME_ALPHA).build();
         EditOutletCommand editOutletCommand = new EditOutletCommand(outOfBoundIndex, descriptor);
 
-        assertCommandFailure(editOutletCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(editOutletCommand, model, Messages.MESSAGE_INVALID_OUTLET_DISPLAYED_INDEX);
     }
 
     @Test

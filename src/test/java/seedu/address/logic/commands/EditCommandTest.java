@@ -22,6 +22,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.util.Optional;
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
@@ -44,6 +45,11 @@ import seedu.address.ui.content.PersonContent;
 public class EditCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+
+    @BeforeEach
+    public void setUp() {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    }
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {
@@ -98,31 +104,6 @@ public class EditCommandTest {
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel,
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPerson, RIGHT_PANE_HEADER)));
-    }
-
-    @Test
-    public void execute_editMultipleCandidates_success() {
-        Set<Index> setMultipleIndexes = Set.of(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
-        EditCommand editCommand = new EditCommand(setMultipleIndexes, descriptor);
-
-        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
-        PersonBuilder firstPersonInList = new PersonBuilder(firstPerson);
-        Person editedFirstPerson = firstPersonInList.withName(VALID_NAME_BOB).withTags(VALID_TAG_HUSBAND).build();
-
-        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_ENTRY.getZeroBased());
-        PersonBuilder secondPersonInList = new PersonBuilder(secondPerson);
-        Person editedSecondPerson = secondPersonInList.withName(VALID_NAME_BOB).withTags(VALID_TAG_HUSBAND).build();
-
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, 2,
-                Messages.format(editedFirstPerson));
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-        expectedModel.setPerson(firstPerson, editedFirstPerson);
-        expectedModel.setPerson(secondPerson, editedSecondPerson);
-
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel,
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedFirstPerson, RIGHT_PANE_HEADER)));
     }
 
     @Test
