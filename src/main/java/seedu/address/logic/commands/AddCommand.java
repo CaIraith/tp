@@ -46,6 +46,9 @@ public class AddCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
     public static final String RIGHT_PANE_HEADER = "NEW CANDIDATE ADDED";
+    public static final String RIGHT_PANE_HEADER_UNDO = "CANDIDATE DELETED";
+    public static final String UNDO_SUCCESS = "Undo successful: Deleted person %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Added person %1$s";
 
     private final Person toAdd;
     private Predicate<? super Person> previousPredicate;
@@ -94,13 +97,17 @@ public class AddCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.deletePerson(toAdd);
         model.setFilteredPersonPredicate(previousPredicate);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(toAdd)),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(toAdd, RIGHT_PANE_HEADER_UNDO)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.addPerson(toAdd);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(toAdd)),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(toAdd, RIGHT_PANE_HEADER)));
     }
 }

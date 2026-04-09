@@ -24,6 +24,8 @@ public class DeleteOutletCommand extends UndoableCommand {
             + "Example: outlet " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_OUTLET_SUCCESS = "Deleted outlet: %1$s";
+    public static final String UNDO_SUCCESS = "Undo successful: Added outlet %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Deleted outlet %1$s";
 
     private final Index targetIndex;
     private Outlet outletToDelete;
@@ -47,13 +49,15 @@ public class DeleteOutletCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.addOutletAtIndex(outletToDelete, targetIndex);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(outletToDelete)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.deleteOutlet(outletToDelete);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(outletToDelete)));
     }
 
     @Override

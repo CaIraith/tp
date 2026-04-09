@@ -16,6 +16,9 @@ public class ClearCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "clear";
     public static final String MESSAGE_SUCCESS = "Address book has been cleared!";
+    public static final String UNDO_SUCCESS = "Undo successful: Address book has been restored.";
+    public static final String REDO_SUCCESS = "Redo successful: Address book has been cleared.";
+
     private ArrayList<Person> previousPersonList;
     private Predicate<? super Person> previousPredicate;
 
@@ -29,15 +32,17 @@ public class ClearCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         for (Person person : previousPersonList) {
             model.addPerson(person);
         }
         model.setFilteredPersonPredicate(previousPredicate);
+        return new CommandResult(UNDO_SUCCESS);
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.setAddressBook(new AddressBook());
+        return new CommandResult(REDO_SUCCESS);
     }
 }
