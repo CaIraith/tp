@@ -66,7 +66,8 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 
 ### Viewing help : `help`
 
-Displays the user guide.
+Displays the user guide. For future bug-fixing: to align the colour with the current LightTheme and fully render the 
+markdown text. 
 
 Format: `help`
 
@@ -256,6 +257,15 @@ Lists all outlets.
 
 Format: `outlet list`
 
+### Comparing Candidates: `compare INDEX_1 INDEX_2`
+
+Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
+Information clears when another action takes up the right-hand-side pane. 
+
+Format: `compare INDEX_1 INDEX_2`
+
+Example: `compare 1 12` selects candidate numbered 1 and 12 in the list for comparison
+
 ### Saving the data
 
 AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
@@ -309,3 +319,4 @@ Action | Format, Examples
 **Add Outlet** | `outlet add n/<name> a/<address> pc/<postalCode>` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
 **Delete Outlet** | `outlet delete <index>` <br> e.g., `outlet delete 1`
 **List Outlets** | `outlet list`
+**Compare Candidates**| `compare INDEX_1 INDEX_2` <br> e.g., `compare 1 2`
