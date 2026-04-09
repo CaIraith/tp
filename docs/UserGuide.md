@@ -235,16 +235,58 @@ Adds an `Outlet`.
 
 Format: `outlet add n/<name> a/<address> pc/<postalCode>`
 
+- Outlet name must be at most 26 characters long.
+- Outlet address must be at most 35 characters long.
+- Outlet name and address must not contain delimiters.
+
 Examples:
 
 - `outlet add n/FinServ a/Marina Bay pc/018956`
 - `outlet add n/TechCo a/Raffles Place pc/048623`
+
+### Editing Outlets : `outlet edit`
+
+Edits an existing `Outlet`.
+
+Format: `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]`
+
+Examples:
+
+- `outlet edit 1 a/One Raffles Place pc/048616`
+- `outlet edit 2 n/TechHub`
+
+### Assigning Candidates to Outlets : `outlet assign`
+
+Assigns a candidate to an `Outlet`.
+
+Format: `outlet assign <candidateIndex> [outletIndex]`
+
+- If `outletIndex` is omitted, the candidate is assigned to the nearest outlet by postal code.
+- If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
+- The outside-Singapore warning is heuristic (keyword-based) and may have false positives/negatives.
+
+Examples:
+
+- `outlet assign 2 1`
+- `outlet assign 2`
+
+### Unassigning Candidates from Outlets : `outlet unassign`
+
+Unassigns a candidate from their working `Outlet`.
+
+Format: `outlet unassign <candidateIndex>`
+
+Examples:
+
+- `outlet unassign 2`
 
 ### Deleting Outlets : `outlet delete`
 
 Deletes an `Outlet`.
 
 Format: `outlet delete <index>`
+
+- If candidates are assigned to the deleted outlet, they are automatically unassigned.
 
 Examples:
 
@@ -307,5 +349,8 @@ Action | Format, Examples
 **List Tag Combos** | `listtagcombo`
 **Add by csv** | `addcsv`
 **Add Outlet** | `outlet add n/<name> a/<address> pc/<postalCode>` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
+**Edit Outlet** | `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]` <br> e.g., `outlet edit 1 a/One Raffles Place pc/048616`
+**Assign Outlet** | `outlet assign <candidateIndex> [outletIndex]` <br> e.g., `outlet assign 2 1`
+**Unassign Outlet** | `outlet unassign <candidateIndex>` <br> e.g., `outlet unassign 2`
 **Delete Outlet** | `outlet delete <index>` <br> e.g., `outlet delete 1`
 **List Outlets** | `outlet list`
