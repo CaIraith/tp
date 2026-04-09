@@ -108,7 +108,6 @@ public interface Model {
     /**
      * Retrives and sets the filter.
      */
-
     Predicate<? super Person> getFilteredPersonPredicate();
 
     void setFilteredPersonPredicate(Predicate<? super Person> predicate);
@@ -129,7 +128,7 @@ public interface Model {
      * {@code outlet} must not already exist in the address book.
      */
     void addOutlet(Outlet outlet);
-    
+
     /**
      * Adds the given outlet at a specified index.
      * {@code outlet} must not already exist in the address book.
@@ -161,7 +160,7 @@ public interface Model {
      * The given {@code TagCombo} must not already exist in the {@code AddressBook}.
      */
     void addTagCombo(TagCombo tagCombo);
-    
+
     /**
      * Adds the given {@code TagCombo} at a specified index.
      * The given {@code TagCombo} must not already exist in the {@code AddressBook}.
