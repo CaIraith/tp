@@ -17,7 +17,7 @@ public class ListCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "list";
 
-    public static final String MESSAGE_SUCCESS = "Listed all person.s";
+    public static final String MESSAGE_SUCCESS = "Listed all persons.";
     public static final String UNDO_SUCCESS = "Undo successful: Returned to previous view.";
     public static final String REDO_SUCCESS = "Redo successful: Now viewing all candidates.";
 
