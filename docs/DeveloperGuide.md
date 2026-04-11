@@ -239,6 +239,71 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 _{more aspects and alternatives to be added}_
 
+### \[Proposed\] Help Function That Displays The User Guide
+
+#### Proposed Implementation
+
+The proposed Help Function is implemented via a Help Window that displays the raw UserGuide.md to the user, to be
+extended as a rendered HTML in the future. It is implemented across the classes HelpWindow and UserGuideParser.
+
+UserGuideParser.extractUserGuide() handles the logic of reading and extracting text. It accepts a BufferedReader
+and two heading strings, a start heading and and end heading which are used to delineate between the start of the text
+to be rendered and the end. The lines between them are returned as a single string. If the start heading is not found,
+it throws an IOException.
+
+HelpWindow.loadUserGuide() handles the file I/O. It opens UserGuide.md via a BufferedReader inside a try block,
+ensuring the file handle remains closed no matter if an exception occurs. It passes the BufferedReader object to
+UserGuideParser.extractUserGuide() and returns the result.
+
+This separated design was made to make the function's internal logic easier to test.
+
+Manual testing would involve changing the contents, location and possibly format of the user guide, but it is only
+designed to handle correct .md files.
+
+### \[Proposed\] Compare Command
+
+#### Proposed Implementation
+
+In order to allow the user to view two Person's information at the same time to compare them, the user inputs
+a command of the form: compare Index_1 Index 2, for instance, command 1 2. The indices are one-based indices
+corresponding to the indices of any entry currently shown in the current personList.
+
+The user's input calls executeCommand("command 1 2") of the MainWindow where the input signature is command 1 2, as a
+String.
+
+MainWindow.executeCommand then calls parseCommand of the AddressBookParser, which extracts the word "compare", and passes the
+subsequent argument string " 1 2" to CompareCommandParser, which is-a child class Parser that provides an overriden
+parse method whose function is simply to use the regex to ensure that the indexes are of the correct format, i.e.
+they must have the relevant spaces and must have two positive integers. If the pattern is not exactly matched, e.g. if
+noninteger, zero or negative values are encountered, then a ParseException is safely thrown and no command object is
+created (although CompareCommand's error message is used to show to the user.)
+
+If the initial input format checks are passed, then a CompareCommand object is created and CompareCommand.execute() is
+created, returned to the MainWindow, from which the execute method is called on the Model.
+
+CompareCommand.execute() then checks whether the indexes are the same, whether the indexes are within the size of the
+current personlist, and throwing the relevant errors into the user's pane if so, by using getFilteredPersonList() of Model
+to obtain the lastShownList to check against.
+
+Finally it uses these indexes to call the first Person and Header and second Person and Header, from the filteredPersonList
+in order to create the Content object ComparisonContent (which is-a RightPaneConte child class) for display in the
+right pane. This returns the relevant CommandResult to be displayed as the final return of executeCommand.
+
+As with other commands, it is rendered in the right pane, using JavaFX's SplitPane library to allow the compared
+person cards to be resized in the MainWindow.
+
+The CompareCommand's CommandResult is only cleared when other functions act on the model to display a new CommandResult,
+and it does not itself act on the model to change it, so it is safe.
+
+CompareCommand was also not designed to inherit UndoCommand since it only retrieves from the model, rather than inducing
+a potentially permanent change to the display that a careless user may need to undo.
+
+The class and sequence diagrams of the feature is as follows:
+
+![CompareCommandClassDiagram](images/CompareCommandClassDiagram.png)
+
+![CompareCommandSequenceDiagram](images/CompareCommandSequenceDiagram.png)
+
 ### \[Proposed\] Data archiving
 
 _{Explain here how the data archiving feature will be implemented}_
@@ -647,3 +712,16 @@ testers are expected to do more *exploratory* testing.
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
+## Comparing Candidates
+
+1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`
+    Expected: All of the relevant candidates' information are shown in a resizeable right pane.
+
+2.  Test negative cases:
+1. Test identical integers: `compare 1 1`
+2. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
+3. Test an integer less than 1: `compare 0 1`, `compare 1 0`
+4. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
+   Expected: In all cases, the relevant error message should be returned in the message box, and no right pane content
+   should be shown.
