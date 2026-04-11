@@ -70,10 +70,11 @@ public class AddCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
         previousPredicate = model.getFilteredPersonPredicate();
+
         try {
             model.addPerson(toAdd);
         } catch (ExceededPersonListCapacityException e) {
-            return new CommandResult(e.getMessage());
+            throw new CommandException(e.getMessage());
         }
 
 

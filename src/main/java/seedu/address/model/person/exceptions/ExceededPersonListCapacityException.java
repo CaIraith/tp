@@ -11,9 +11,6 @@ public class ExceededPersonListCapacityException extends RuntimeException {
      */
     public ExceededPersonListCapacityException() {
         super("The maximum capacity of the candidate book is " + MAX_LEN_PERSON_LIST + "! Delete some candidates"
-                + "before performing this command again!");
-    }
-    public ExceededPersonListCapacityException(String message) {
-        super(message);
+                + " before performing this command again!");
     }
 }
