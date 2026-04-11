@@ -639,10 +639,10 @@ Use case ends.
 
 1. Efficiency
    * System should be able to process commands such as add, edit, delete, and list within 0.2 second.
-   * System should be able to handle up to 500 contacts without a noticeable lag.
+   * System should be able to handle up to 999 contacts without a noticeable lag.
 2. Capacity
-   * System should be able to store up to 500 contacts.
-   * System should be able to read and enter up to 100 contacts from a csv file at a time.
+   * System should be able to store up to 999 contacts.
+   * System should be able to read and enter up to 50 contacts from a csv file at a time.
 3. Quality
    * A new user should be able to learn, and add a candidate to the system within 60 seconds of launching the app.
    * System should have clear error messages that explain the source of the error and how to correct the error.
