@@ -9,7 +9,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class OutletName {
 
-    public static final int MAX_LENGTH = 26;
+    public static final int MAX_LENGTH = 10;
     public static final String MESSAGE_CONSTRAINTS = "Outlet names should not be blank, should be at most "
             + MAX_LENGTH + " characters long, and should not contain command delimiters such as n/, a/, or pc/.";
     public static final String VALIDATION_REGEX = "[^\\s].*";
