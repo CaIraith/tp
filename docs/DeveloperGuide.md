@@ -638,8 +638,6 @@ testers are expected to do more *exploratory* testing.
 
 ### Deleting a person
 
-1. Deleting a person while all persons are being shown
-
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    1. Test case: `delete 1`<br>
@@ -653,8 +651,7 @@ testers are expected to do more *exploratory* testing.
 
 ### Adding a person
 
-1. Adding a person while all persons are being shown
-    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
    2. Test case: `add n/example e/example@example.com p/123456 pc/123456 a/example`<br>
    Expected: Person is added to the end of the list. Full details of the added person is displayed in the right panel and the status message.
    3. Test case: `add n/example e/example@example p/12345 pc/123456 a/example`<br>
@@ -666,7 +663,6 @@ testers are expected to do more *exploratory* testing.
 
 ### Adding a tag combo
 
-1. Adding a Tag Combo
    1. Prerequisites: None
    2. Test case: `addtagcombo ml dev t/python t/java`
    Expected: Tag combo is added to the end of the tag combo list. System message shows the name of the tag combo alongside its associated tags. The tag combo list is displayed on the right pane.
@@ -677,7 +673,6 @@ testers are expected to do more *exploratory* testing.
 
 ### Deleting a tag combo
 
-1. Deleting a tag combo
    1. Prerequisites: There must be at least 1 valid tag combo already added. List all tag combos using `listtagcombo` command.
    2. Test case: `deletetagcombo 1`
    Expected: Tag combo is deleted from the tag combo list. Details of the tag combo deleted is displayed in the status message, and the right pane shows the remaining tag combo list after deletion.
@@ -686,7 +681,6 @@ testers are expected to do more *exploratory* testing.
 
 ### Filtering by tag/tagcombo
 
-1. Filtering by tag/tag combo
    1. Prerequisites: There must be persons in the address book with the tags `python` and `java`. No tag combos yet defined.
    2. Test case: `filter t/java`
    Expected: The addressbook shows only persons with the `java` tag. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
@@ -699,14 +693,11 @@ testers are expected to do more *exploratory* testing.
    6. Test case: `filter tc/ml`
    Expected: The addressbook is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
 
-## Appendix: Known Issues
-
 ## Comparing Candidates
-
 1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`
     Expected: All of the relevant candidates' information are shown in a resizeable right pane.
 
-2.  Test negative cases:
+1. Test negative cases:
 1. Test identical integers: `compare 1 1`
 2. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
 3. Test an integer less than 1: `compare 0 1`, `compare 1 0`
@@ -714,5 +705,9 @@ testers are expected to do more *exploratory* testing.
    Expected: In all cases, the relevant error message should be returned in the message box, and no right pane content
    should be shown.
 
+## Appendix: Known Issues
+
 1. Long command names<br>
    Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
+2. Large indices give the wrong error message
+   When very large indices are provided (e.g., integers that cause overflow), the system displays an incorrect error message indicating an invalid command format instead of signalling that the integer is too large. Fixing this issue would require introducing additional validation checks or flags, and is therefore considered low priority. As the bug stems from overly aggressive input validation and offers a low effort-to-reward ratio, it was not addressed in v1.6.
