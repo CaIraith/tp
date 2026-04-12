@@ -31,6 +31,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.tag.TagCombo;
 import seedu.address.model.tag.TagComboName;
 import seedu.address.model.tag.TagCounter;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Tests for {@code AddByCsvCommand}.
@@ -75,6 +76,19 @@ public class AddByCsvCommandTest {
         assertThrows(CommandException.class,
                 String.format(AddByCsvCommand.MESSAGE_DUPLICATE_PERSON,
                         Messages.format(ALICE)), () -> command.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicatePersonWithinCsv_throwsCommandException() {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        Person duplicateAlice = new PersonBuilder(ALICE).withName("Alice Clone").build();
+        List<Person> personsToAdd = Arrays.asList(ALICE, duplicateAlice);
+        AddByCsvCommand command = new AddByCsvCommand(personsToAdd);
+        String expectedMessage = String.format(
+                AddByCsvCommand.MESSAGE_DUPLICATE_PERSON, Messages.format(duplicateAlice));
+
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(modelStub));
+        assertTrue(modelStub.personsAdded.isEmpty());
     }
 
     @Test
