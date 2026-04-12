@@ -21,6 +21,11 @@ public class OutletNameTest {
     }
 
     @Test
+    public void constructor_reservedOutletName_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new OutletName("UnAssigned"));
+    }
+
+    @Test
     public void isValidOutletName() {
         assertThrows(NullPointerException.class, () -> OutletName.isValidOutletName(null));
 
