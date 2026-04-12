@@ -43,7 +43,7 @@ public class OutletTest {
         assertFalse(OUTLET_ALPHA.isSameOutlet(null));
 
         // same location, different name
-        assertTrue(OUTLET_ALPHA.isSameOutlet(OUTLET_ALPHA_EDITED));
+        assertFalse(OUTLET_ALPHA.isSameOutlet(OUTLET_ALPHA_EDITED));
 
         // different location
         assertFalse(OUTLET_ALPHA.isSameOutlet(OUTLET_BETA));

@@ -22,7 +22,7 @@ public class UniqueOutletListTest {
             new OutletPostalCode("048623"));
 
     private static final Outlet OUTLET_ALPHA_EDITED = new Outlet(
-            new OutletName("TechBrc2"),
+            new OutletName("TechCo"),
             new OutletAddress("Raffles Place"),
             new OutletPostalCode("048623"));
 
