@@ -43,6 +43,15 @@ public class AddByCsvCommand extends UndoableCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        for (int i = 0; i < personsToAdd.size() - 1; i++) {
+            for (int j = i + 1; j < personsToAdd.size(); j++) {
+                if (personsToAdd.get(i).isSamePerson(personsToAdd.get(j))) {
+                    throw new CommandException(
+                            String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(personsToAdd.get(j))));
+                }
+            }
+        }
+
         for (Person person : personsToAdd) {
             if (model.hasPerson(person)) {
                 throw new CommandException(
