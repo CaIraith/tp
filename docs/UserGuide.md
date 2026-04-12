@@ -66,7 +66,7 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 
 ### Viewing help : `help`
 
-Displays the user guide.
+Displays the user guide markdown file as raw, but readable markdown text.
 
 Format: `help`
 
@@ -234,6 +234,15 @@ Format: `undo`
 * `list`, `filter`, `find` Returns to the previous view of the Address Book.
 * `clear` Adds all `Person`s deleted.
 
+### Comparing Candidates: `compare INDEX_1 INDEX_2`
+
+Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
+Information clears when another action takes up the right-hand-side pane.
+
+Format: `compare INDEX_1 INDEX_2`
+
+Example: `compare 1 12` selects candidate numbered 1 and 12 in the list for comparison
+
 ### Redoing previous action : `undo`
 
 Redoes the previous action performed.
@@ -245,7 +254,7 @@ To demonstrate:
 - `edit 1 n/John Doe`
 - `redo` -> "Nothing to redo!"
 
-Format: `undo`
+Format: `redo`
 
 * `add` Adds the `Person` deleted.
 * `addcsv` Adds all `Person`s deleted.
@@ -273,10 +282,50 @@ Adds an `Outlet`.
 
 Format: `outlet add n/<name> a/<address> pc/<postalCode>`
 
+- Outlet name must be at most 26 characters long.
+- Outlet address must be at most 35 characters long.
+- Outlet name and address must not contain delimiters.
+
 Examples:
 
 - `outlet add n/FinServ a/Marina Bay pc/018956`
 - `outlet add n/TechCo a/Raffles Place pc/048623`
+
+### Editing Outlets : `outlet edit`
+
+Edits an existing `Outlet`.
+
+Format: `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]`
+
+Examples:
+
+- `outlet edit 1 a/One Raffles Place pc/048616`
+- `outlet edit 2 n/TechHub`
+
+### Assigning Candidates to Outlets : `outlet assign`
+
+Assigns a candidate to an `Outlet`.
+
+Format: `outlet assign <candidateIndex> [outletIndex]`
+
+- If `outletIndex` is omitted, the candidate is assigned to the nearest outlet by postal code.
+- If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
+- The outside-Singapore warning is heuristic (keyword-based) and may have false positives/negatives.
+
+Examples:
+
+- `outlet assign 2 1`
+- `outlet assign 2`
+
+### Unassigning Candidates from Outlets : `outlet unassign`
+
+Unassigns a candidate from their working `Outlet`.
+
+Format: `outlet unassign <candidateIndex>`
+
+Examples:
+
+- `outlet unassign 2`
 
 ### Deleting Outlets : `outlet delete`
 
@@ -284,21 +333,11 @@ Deletes an `Outlet`.
 
 Format: `outlet delete <index>`
 
+- If candidates are assigned to the deleted outlet, they are automatically unassigned.
+
 Examples:
 
 - `outlet delete 1`
-
-### Editing Outlets : `outlet edit`
-
-Edits an `Outlet`.
-
-Format: `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE] ​`
-
-Examples:
-
-- `outlet edit 1 n/Techco` Edits the name of the first outlet to be `Techco`
-- `outlet edit 2 a/Marina Bay Sands pc/298429` Edits the address and postal code of the second outlet to be `Marina Bay Sands` and `298429` respectively.
-
 
 ### Listing Outlets : `outlet list`
 
@@ -359,6 +398,9 @@ Action | Format, Examples
 **List Tag Combos** | `listtagcombo`
 **Add by csv** | `addcsv`
 **Add Outlet** | `outlet add n/<name> a/<address> pc/<postalCode>` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
+**Edit Outlet** | `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]` <br> e.g., `outlet edit 1 a/One Raffles Place pc/048616`
+**Assign Outlet** | `outlet assign <candidateIndex> [outletIndex]` <br> e.g., `outlet assign 2 1`
+**Unassign Outlet** | `outlet unassign <candidateIndex>` <br> e.g., `outlet unassign 2`
 **Delete Outlet** | `outlet delete <index>` <br> e.g., `outlet delete 1`
 **Edit Outlet** | `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`

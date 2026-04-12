@@ -1,0 +1,56 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":CompareCommandParser" as CompareCommandParser LOGIC_COLOR
+participant "c:CompareCommand" as CompareCommand LOGIC_COLOR
+end box
+
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+
+[-> LogicManager : execute("compare 1 2")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("compare 1 2")
+activate AddressBookParser
+
+AddressBookParser -> CompareCommandParser : parse(" 1 2")
+activate CompareCommandParser
+
+create CompareCommand
+CompareCommandParser -> CompareCommand
+activate CompareCommand
+CompareCommand --> CompareCommandParser
+deactivate CompareCommand
+
+CompareCommandParser --> AddressBookParser : c
+deactivate CompareCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> CompareCommand : execute(model)
+activate CompareCommand
+
+CompareCommand -> Model : getFilteredPersonList()
+activate Model
+Model --> CompareCommand : lastShownList
+deactivate Model
+
+CompareCommand --> LogicManager : result
+deactivate CompareCommand
+
+CompareCommand -[hidden]-> LogicManager : result
+destroy CompareCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

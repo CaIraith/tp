@@ -1,0 +1,110 @@
+@startuml
+hide circle
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam classFontStyle plain
+
+
+interface RightPaneContent {
+    +render(contentPlaceholder: VBox): void
+}
+
+class ComparisonContent {
+    -firstPerson: Person
+    -secondPerson: Person
+    -firstHeader: String
+    -secondHeader: String
+    +render(contentPlaceholder: VBox): void
+    +equals(other: Object): boolean
+    +hashCode(): int
+}
+
+class PersonContent {
+    -person: Person
+    -header: String
+    +render(contentPlaceholder: VBox): void
+    +equals(other: Object): boolean
+    +hashCode(): int
+}
+
+class TagCountsContent {
+    -tagCounter: TagCounter
+    +render(contentPlaceholder: VBox): void
+    +equals(other: Object): boolean
+    +hashCode(): int
+}
+
+abstract class Command {
+    +execute(model: Model): CommandResult
+}
+
+class CompareCommand {
+    -firstIndex: Index
+    -secondIndex: Index
+    +execute(model: Model): CommandResult
+    +equals(other: Object): boolean
+    +hashCode(): int
+}
+
+class CompareCommandParser {
+    +parse(args: String): CompareCommand
+}
+
+class CommandResult {
+    -feedbackToUser: String
+    -uiAction: UiAction
+    -content: Optional<RightPaneContent>
+    +getFeedbackToUser(): String
+    +getUiAction(): UiAction
+    +getContent(): Optional<RightPaneContent>
+    +equals(other: Object): boolean
+    +hashCode(): int
+}
+
+enum UiAction {
+    NONE
+    SHOW_HELP
+    EXIT
+    UPDATE_RIGHT_PANE
+    SHOW_TAG_COMBO
+}
+
+interface Model {
+    +getFilteredPersonList(): ObservableList<Person>
+}
+
+class Person {
+    -name: Name
+    -phone: Phone
+    -email: Email
+    -address: Address
+    -postalCode: PostalCode
+    -tags: Set<Tag>
+    +equals(other: Object): boolean
+    +hashCode(): int
+}
+
+class Index {
+    +fromOneBased(oneBasedIndex: int): Index
+    +getZeroBased(): int
+    +getOneBased(): int
+}
+
+RightPaneContent <|.. ComparisonContent
+RightPaneContent <|.. PersonContent
+RightPaneContent <|.. TagCountsContent
+
+Command <|-- CompareCommand
+
+CompareCommandParser ..> CompareCommand : creates
+
+CompareCommand ..> Model : uses
+CompareCommand ..> CommandResult : creates
+CompareCommand "1" --> "2" Index
+CompareCommand "1" --> "2" Person
+
+CommandResult "1" --> "1" UiAction
+CommandResult "1" --> "0..1" RightPaneContent
+
+
+@enduml
