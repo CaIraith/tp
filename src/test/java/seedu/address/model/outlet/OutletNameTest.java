@@ -28,6 +28,8 @@ public class OutletNameTest {
         assertFalse(OutletName.isValidOutletName("   "));
         assertFalse(OutletName.isValidOutletName("ABCDEFGHIJK"));
         assertFalse(OutletName.isValidOutletName("Something n/Something"));
+        assertFalse(OutletName.isValidOutletName("unassigned"));
+        assertFalse(OutletName.isValidOutletName("UnAssigned"));
 
         assertTrue(OutletName.isValidOutletName("TechCo"));
         assertTrue(OutletName.isValidOutletName("FinServ"));
