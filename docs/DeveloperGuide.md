@@ -150,7 +150,7 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Right Panel Content
 
-The right panel is used by several different commands, such as `listtags`, `add`, `delete`, `listtagcombos`, `compare` etc. The different kinds of details that can be displayed on the right panel are full details of a `Person`, the frequency of `Tag`s, and the `TagCombo` list, comparison of 2 different `Person`s. 
+The right panel is used by several different commands, such as `listtags`, `add`, `delete`, `listtagcombos`, `compare` etc. The different kinds of details that can be displayed on the right panel are full details of a `Person`, the frequency of `Tag`s, and the `TagCombo` list, comparison of 2 different `Person`s.
 
 #### Implementation
 
@@ -173,7 +173,7 @@ An example sequence diagram when the command `listtags` is called is shown below
 5. The command creates a `CommandResult` during execution and returns it to **LogicManager**, which propagates it back to **MainWindow**.
 6. **MainWindow** retrieves the `RightPaneContent` from the `CommandResult` using `getContent()`.
 7. **MainWindow** calls `render()` on the `RightPaneContent` to update the UI.
-   
+
 <img src="images/RightPaneContentSequenceDiagram.png" width="550" />
 
 #### Design considerations:
@@ -698,7 +698,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Exact same behaviour as previous.
    6. Test case: `filter tc/ml`
    Expected: The addressbook is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
-   
+
 ## Appendix: Known Issues
 
 ## Comparing Candidates
@@ -716,3 +716,4 @@ testers are expected to do more *exploratory* testing.
 
 1. Long command names<br>
    Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
+2. 
