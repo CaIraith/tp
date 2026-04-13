@@ -1,8 +1,6 @@
 package seedu.address.ui;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
@@ -20,13 +18,9 @@ public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://github.com/AY2526S2-CS2103-F08-3/tp/"
             + "blob/master/docs/UserGuide.md";
-    public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
-
-    // Path to UserGuide.md relative to project root
-    private static final String USERGUIDE_PATH = "docs/Userguide.md";
 
     // Heading line from Userguide.md to start from
     private static final String START_HEADING = "## Features";
@@ -105,27 +99,17 @@ public class HelpWindow extends UiPart<Stage> {
     }
 
     /**
-     * Reads UserGuide.md from the relative path USERGUIDE_PATH,
+     * Reads UserGuide.md from src/main/resources
      * runs extractUserGuide to extract UserGuide from START_HEADING to END_HEADING.
      */
     private String loadUserGuide() {
         try {
-            FileInputStream userGuideInput = new FileInputStream(USERGUIDE_PATH);
-            InputStreamReader inputStreamReader = new InputStreamReader(userGuideInput);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-
-            try {
-                UserGuideParser parser = new UserGuideParser();
-                return parser.extractUserGuide(reader, START_HEADING, END_HEADING);
-            } finally {
-                reader.close();
-            }
-
+            InputStream stream = HelpWindow.class.getResourceAsStream("/UserGuide.md");
+            UserGuideParser parser = new UserGuideParser();
+            return parser.loadFromStream(stream, START_HEADING, END_HEADING);
         } catch (Exception e) {
-            logger.warning("Failed to load UserGuide.md from path " + USERGUIDE_PATH
-                    + e.getMessage());
-            return "Failed to load local user-guide. \n Visit: " + USERGUIDE_URL
-                    + " instead";
+            logger.warning("Failed to load UserGuide.md: " + e.getMessage());
+            return "Failed to load local user-guide. \n Visit: " + USERGUIDE_URL + " instead";
         }
     }
 

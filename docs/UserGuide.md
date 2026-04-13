@@ -17,9 +17,9 @@ HireLens is a **desktop app for HR recruiters to manage candidates, optimized fo
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103-F08-3/tp/releases/tag/v1.5).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your HireLens.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar HireLens.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -192,6 +192,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 * cCandidates matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 * The search works on the CURRENT view of the Candidate List, rather than the full Candidate List.
+* The tag counts after filtering are displayed on the **Right Panel** on success, similar to calling `listtags`.
 
 Examples:
 * `find John` returns `john` and `John Doe`
@@ -208,7 +209,7 @@ Format: `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]...`
 * The search works on the CURRENT view of the Candidate List, rather than the full Candidate List.
 * The search requires at least 1 tag/tag combo to work.
 * The tag combo must exist to work, whereas an invalid tag will simply return 0 candidates.
-* The tag counts after filtering are displayed on the **Right Panel** on success.
+* The tag counts after filtering are displayed on the **Right Panel** on success, similar to calling `listtags`.
 
 Examples:
 * `filter tc/ml dev`
