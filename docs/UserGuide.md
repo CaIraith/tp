@@ -360,6 +360,7 @@ Examples:
 
 - `outlet add n/FinServ a/Marina Bay pc/018956`
 - `outlet add n/TechCo a/Raffles Place pc/048623`
+  ![result for `outlet add n/TechCo a/Raffles Place pc/048623`](images/OutletAddResult.png)
 
 ### Editing Outlets : `outlet edit`
 
@@ -399,14 +400,21 @@ Format: `outlet assign CANDIDATE_INDEX [OUTLET_INDEX]`
 
 Examples:
 
-- `outlet assign 2 1`
-- `outlet assign 2`
+- `outlet assign 1 1`
+  ![result for `outlet assign 1 1`](images/OutletAssignResult.png)
+- `outlet assign 1`
+  ![result for `outlet assign 1`](images/OutletAssignResult.png)
+- `outlet assign 4` with non-Singapore-like address warning.
+  ![result for `outlet assign 4` with warning](images/OutletAssignResultWithWarning.png)
 
 ### Unassigning Candidates from Outlets : `outlet unassign`
 
 Unassigns a candidate from their working `Outlet`.
 
 Format: `outlet unassign CANDIDATE_INDEX`
+
+* `CANDIDATE_INDEX` refers to the displayed candidate list.
+* If the candidate is already unassigned, the command keeps the candidate unassigned.
 
 Examples:
 
@@ -418,7 +426,9 @@ Deletes an `Outlet`.
 
 Format: `outlet delete INDEX`
 
-- If candidates are assigned to the deleted outlet, they are automatically unassigned.
+* `INDEX` refers to the displayed outlet list.
+* If candidates are assigned to the deleted outlet, they are automatically unassigned.
+* Auto-unassignment applies across all candidates in the address book (not only filtered/displayed candidates).
 
 Examples:
 
