@@ -621,7 +621,7 @@ Use case ends.
 2. User enters outlet details (name, address, postal code).
 3. HireLens validates required fields and field constraints.
 4. HireLens checks that the outlet is not a duplicate.
-5. HireLens adds the outlet and displays confirmation.
+5. HireLens adds the outlet and displays a success message.
 
 Use case ends.
 
@@ -647,13 +647,13 @@ Use case ends.
 2. HireLens validates the outlet index.
 3. HireLens unassigns all candidates currently assigned to that outlet.
 4. HireLens deletes the outlet.
-5. HireLens displays confirmation and updates relevant candidate details if needed.
+5. HireLens displays a success message and updates relevant candidate details if needed.
 
 Use case ends.
 
 **Extensions**
 
-2a. The provided outlet index is invalid.<br>
+2a. The provided outlet index is out of bounds (less than 1 or greater than the displayed outlet list size).<br>
 2a1. HireLens informs the user that the outlet index is invalid.<br>
 2a2. HireLens does not delete any outlet.
 
@@ -667,7 +667,6 @@ Use case ends.
 2. HireLens validates the candidate index and checks that at least one outlet exists.
 3. If outlet index is provided, HireLens validates that outlet index and selects that outlet.
 4. If outlet index is omitted, HireLens resolves an outlet using nearest-outlet logic based on postal coordinates.
-   If required postal-coordinate data for nearest resolution is unavailable, HireLens uses random fallback selection.
 5. HireLens assigns the candidate to the selected outlet and displays updated candidate details.
 
 Use case ends.
@@ -695,6 +694,12 @@ Use case ends.
 4a. The SG postal dataset is unavailable for nearest assignment mode (when outlet index is omitted).<br>
 4a1. HireLens informs the user that nearest-assignment data could not be loaded.<br>
 4a2. HireLens does not update any assignment.
+
+Use case ends.
+
+4b. Candidate and/or outlet postal codes are missing from the SG dataset in nearest assignment mode.<br>
+4b1. HireLens applies the documented random fallback outlet selection.<br>
+4b2. HireLens continues and completes assignment.
 
 Use case ends.
 
