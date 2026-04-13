@@ -369,7 +369,18 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
+
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+
+3. Long command names<br>
+   Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
+
+4. Large indices give the wrong error message<br>
+   When very large indices are provided (e.g., integers that cause overflow), the system displays an incorrect error message indicating an invalid command format instead of signalling that the integer is too large. Fixing this issue would require introducing additional validation checks or flags, and is therefore considered low priority. As the bug stems from overly aggressive input validation and offers a low effort-to-reward ratio, it was not addressed in v1.6.
+
+5. Semantic ambiguity between `filter` and `find`
+   `filter` and `find` commands provide very similar functionality, with `filter` taking in `Tag`s or `TagCombo`s, and `find` taking in names. However, `find` works using partial matching, while `filter` works using case-insensitive full matching. While this overlap in purpose may introduce some redundancy, the commands remain functionally distinct due to their differing input types and matching strategies. As such, the potential for user confusion is limited, and both commands continue to serve valid use cases. Given this distinction, consolidating or refactoring them is considered a low priority, as the current design does not significantly impact usability.
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -399,3 +410,4 @@ Action | Format, Examples
 **Delete Outlet** | `outlet delete <index>` <br> e.g., `outlet delete 1`
 **Edit Outlet** | `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`
+**Compare candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`

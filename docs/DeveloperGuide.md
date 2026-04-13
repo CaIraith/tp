@@ -698,14 +698,3 @@ testers are expected to do more *exploratory* testing.
    6. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
    Expected: In all cases, the relevant error message should be returned in the message box, and no right pane content
    should be shown.
-
-## Appendix: Known Issues
-
-1. Long command names<br>
-   Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
-
-2. Large indices give the wrong error message<br>
-   When very large indices are provided (e.g., integers that cause overflow), the system displays an incorrect error message indicating an invalid command format instead of signalling that the integer is too large. Fixing this issue would require introducing additional validation checks or flags, and is therefore considered low priority. As the bug stems from overly aggressive input validation and offers a low effort-to-reward ratio, it was not addressed in v1.6.
-
-3. Semantic ambiguity between `filter` and `find`
-   `filter` and `find` commands provide very similar functionality, with `filter` taking in `Tag`s or `TagCombo`s, and `find` taking in names. However, `find` works using partial matching, while `filter` works using case-insensitive full matching. While this overlap in purpose may introduce some redundancy, the commands remain functionally distinct due to their differing input types and matching strategies. As such, the potential for user confusion is limited, and both commands continue to serve valid use cases. Given this distinction, consolidating or refactoring them is considered a low priority, as the current design does not significantly impact usability.
