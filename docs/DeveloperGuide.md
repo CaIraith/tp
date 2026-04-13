@@ -591,7 +591,6 @@ Use case ends.
 2. **View**: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
 3. **Tag Combination**: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 4. **Outlet**: An outlet corresponds to a physical location of an office/asset of the company, with the following details: **Name**, **Address** and **Postal Code**.
-5. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 
 #### UI Glossary Terms
 
@@ -702,7 +701,7 @@ testers are expected to do more *exploratory* testing.
    6. Test case: `filter tc/ml`<br>
    Expected: The addressbook is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
 
-## Comparing Candidates
+### Comparing Candidates
    1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`<br>
     Expected: All of the relevant candidates' information are shown in a resizeable right pane.
 
