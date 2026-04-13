@@ -330,18 +330,18 @@ Steps 1a1-1a2 are repeated until the data entered are correct.
 
 Use case resumes from step 2.
 
-**Use case: UC02 - Edit Contact**
+**Use case: UC02 - Edit Candidate**
 
 **MSS**
 
-1. User provides HireLens with the person to modify, and the fields to modify, alongside their new values.
-2. HireLens displays the current view of the candidate book, with the specific candidate's details updated.
+1. User provides HireLens with the candidate to modify, and the fields to modify, alongside their new values.
+2. HireLens displays the current view of the candidate list, with the specific candidate's details updated.
 
 Use case ends.
 
 **Extensions**
 
-1a. User provides an invalid index.<br>
+1a. User provides an invalid candidate.<br>
 1a1. HireLens informs the user of the error made and requests corrected information.<br>
 1a2. User enters corrected data.<br>
 Steps 1a1-1a2 are repeated until the data entered are correct.
@@ -386,7 +386,7 @@ Use case ends.
 **MSS**
 
 1. User requests to undo the previous action they performed.
-2. HireLens restores the state of the contact list before the last action was performed and displays the view of the candidate book one command ago.
+2. HireLens restores the state of the candidate list before the last action was performed and displays the view of the candidate list one command ago.
 
 Use case ends.
 
@@ -464,7 +464,7 @@ Use case ends.
 
 1. User requests to add a remark to a specific candidate.
 2. HireLens overwrites the remark to the candidate.
-3. HireLens displays the current view of the candidate book, with the specific candidate updated.
+3. HireLens displays the current view of the candidate list, with the specific candidate updated.
 
 Use case ends.
 
@@ -474,8 +474,8 @@ Use case ends.
 
 1. User requests to add candidate using a csv file.
 2. HireLens checks whether the provided file is in the `.csv` format.
-3. HireLens adds all contacts specified by the csv file.
-4. HireLens displays the full candidate book.
+3. HireLens adds all candidates specified by the csv file.
+4. HireLens displays the full candidate list.
 
 Use case ends.
 
@@ -483,19 +483,19 @@ Use case ends.
 
 1a. The specified csv file does not exist.<br>
 1a1. HireLens informs the user the csv file does not exist.<br>
-1a2. HireLens displays the current view of the candidate book.
+1a2. HireLens displays the current view of the candidate list.
 
 Use case ends.
 
 1b. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
 1b1. HireLens informs the user that only `.csv` files are accepted and prompts for a valid file.<br>
-1b2. HireLens displays the current view of the candidate book.
+1b2. HireLens displays the current view of the candidate list.
 
 Use case ends.
 
 1c. The specified csv file contains information in the wrong format.<br>
 1c1. HireLens informs the user the csv file contains information in the wrong format.<br>
-1c2. HireLens displays the current view of the candidate book.
+1c2. HireLens displays the current view of the candidate list.
 
 Use case ends.
 
