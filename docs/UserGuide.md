@@ -177,7 +177,7 @@ Examples:
 * `filter tc/ml dev`
 * `filter t/java tc/ml dev`
 * `filter t/Java t/Python` returns `Benson Meier`, `Natalie Lim`.
-* ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
+  ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
 
 ### Listing existing tags: `listtags`
 
@@ -200,7 +200,7 @@ Format: `addtagcombo NAME t/TAG t/TAG [t/TAG]...`
 Examples:
 * `addtagcombo ml dev t/python t/ml`
 * `addtagcombo java backend dev t/java t/backend t/docker`
-![result for `addtagcombo java backend dev t/java t/backend t/docker`](images/addTagComboResult.png)
+  ![result for `addtagcombo java backend dev t/java t/backend t/docker`](images/addTagComboResult.png)
 
 ### Deleting tag combos: `deletetagcombo`
 
@@ -222,7 +222,7 @@ Lists all tag combos in the Right Panel.
 
 Format: `listtagcombo`
 
-* ![result for 'listtagcombo'](images/listTagComboResult.png)
+  ![result for 'listtagcombo'](images/listTagComboResult.png)
 
 ### Deleting a candidate : `delete`
 
