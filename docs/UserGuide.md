@@ -378,9 +378,24 @@ Assigns a candidate to an `Outlet`.
 
 Format: `outlet assign CANDIDATE_INDEX [OUTLET_INDEX]`
 
-- If `outletIndex` is omitted, the candidate is assigned to the nearest outlet by postal code.
-- If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
-- The outside-Singapore warning is heuristic (keyword-based) and may have false positives/negatives.
+* `CANDIDATE_INDEX` refers to the displayed candidate list.
+* `OUTLET_INDEX` (if provided) refers to the displayed outlet list.
+* At least one outlet must exist.
+* Assumption: outlets are intended to be Singapore locations with valid Singapore postal codes.
+* If `OUTLET_INDEX` is provided, the candidate is assigned directly to that outlet.
+* If `OUTLET_INDEX` is omitted, nearest assignment mode is used:
+  * Candidate/outlet postal codes are looked up in the built-in SG postal dataset (`SG_postal.csv`).
+  * If candidate postal code is found:
+    * nearest outlet is selected using Euclidean distance on latitude/longitude,
+      considering only outlets whose postal code is also found in the dataset.
+    * if no outlet postal code is found in the dataset, one outlet is chosen randomly.
+  * If candidate postal code is not found:
+    * if at least one outlet postal code is also not found in the dataset, one of those outlets is chosen randomly.
+    * otherwise, one outlet is chosen randomly from all outlets.
+* Random fallback selection is non-deterministic.
+* If the SG postal dataset cannot be loaded, command execution fails.
+* If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
+  This warning is heuristic (keyword-based) and may have false positives/negatives.
 
 Examples:
 
@@ -464,12 +479,13 @@ Action | Format, Examples
 **Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd pc/123456 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEXES {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [T/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEXES {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]... `<br> e.g., `filter t/java t/python tc/ml dev`
 **Compare Candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`
 **List** | `list`
 **Help** | `help`
+**Exit** | `exit`
 **Undo** | `undo`
 **Redo** | `redo`
 **List Tags** | `listtags`
