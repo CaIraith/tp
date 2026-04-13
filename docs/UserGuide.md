@@ -179,6 +179,15 @@ Examples:
 * `filter t/Java t/Python` returns `Benson Meier`, `Natalie Lim`.
   ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
 
+### Comparing Candidates: `compare`
+
+Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
+Information clears when another action takes up the right-hand-side pane.
+
+Format: `compare INDEX_1 INDEX_2`
+
+Example: `compare 1 12` selects candidate numbered 1 and 12 in the list for comparison
+
 ### Listing existing tags: `listtags`
 
 Lists all tags in descending order of frequencies, along with their frequencies in the **Right Panel**.
@@ -267,16 +276,7 @@ Format: `undo`
 * `list`, `filter`, `find` Returns to the previous view of the Address Book.
 * `clear` Adds all `Candidate`s deleted.
 
-### Comparing Candidates: `compare`
-
-Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
-Information clears when another action takes up the right-hand-side pane.
-
-Format: `compare INDEX_1 INDEX_2`
-
-Example: `compare 1 12` selects candidate numbered 1 and 12 in the list for comparison
-
-### Redoing previous action : `undo`
+### Redoing previous action : `redo`
 
 Redoes the previous action performed.
 Note that after performing a new action, the previous undo cannot be redone. This is to prevent complicated interactions
@@ -380,7 +380,7 @@ Format: `outlet list`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+HireLens data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
@@ -409,10 +409,10 @@ Furthermore, certain edits can cause HireLens to behave in unexpected ways (e.g.
 3. Long command names<br>
    Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
 
-4. Semantic ambiguity between `filter` and `find`
+4. Semantic ambiguity between `filter` and `find`<br>
    `filter` and `find` commands provide very similar functionality, with `filter` taking in `Tag`s or `TagCombo`s, and `find` taking in names. However, `find` works using partial matching, while `filter` works using case-insensitive full matching. While this overlap in purpose may introduce some redundancy, the commands remain functionally distinct due to their differing input types and matching strategies. As such, the potential for user confusion is limited, and both commands continue to serve valid use cases. Given this distinction, consolidating or refactoring them is considered a low priority, as the current design does not significantly impact usability.
 
-5. Showing candidates full details require clicking
+5. Showing candidates full details require clicking<br>
    As each candidate may contain many details, the application is designed to display full information only when required, achieved by clicking on a candidate in the list to reduce visual clutter. Additionally, full details are automatically shown for certain commands such as `add` and `edit`, ensuring that relevant information is surfaced when necessary.
 
     However, this interaction model is not fully aligned with a typist-oriented UI, as it relies on mouse input for navigation. While this may introduce minor inefficiency for keyboard-focused users, the impact is limited since key workflows still surface the required details automatically. Enhancements to support keyboard-based navigation of candidate details are being considered for future iterations.
@@ -430,6 +430,7 @@ Action | Format, Examples
 **Edit** | `edit INDEXES {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [T/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]... `<br> e.g., `filter t/java t/python tc/ml dev`
+**Compare Candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`
 **List** | `list`
 **Help** | `help`
 **Undo** | `undo`
@@ -446,4 +447,3 @@ Action | Format, Examples
 **Delete Outlet** | `outlet delete INDEX` <br> e.g., `outlet delete 1`
 **Edit Outlet** | `outlet edit INDEX [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`
-**Compare candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`
