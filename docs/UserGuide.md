@@ -17,9 +17,9 @@ HireLens is a **desktop app for HR recruiters to manage candidates, optimized fo
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103-F08-3/tp/releases/tag/v1.5).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your HireLens.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar HireLens.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -110,9 +110,40 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 pc/123456`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 pc/654321 t/criminal`
 
-### Adding candidates by csv file: `addcsv`
+### Adding Candidates by CSV File : `addcsv`
 
-Format: `addcsv path/to/csv/from/root.csv`
+Adds multiple candidates from a CSV file.
+
+Format: `addcsv PATH_TO_CSV_FILE`
+
+* `PATH_TO_CSV_FILE` must point to a `.csv` file that exists.
+* The file path is resolved from the current working directory (typically the folder where you run the app/JAR).
+* Header row is required and must be:
+  `name,phone,email,address,postalCode` with an optional sixth column `tags`.
+* Header names are case-insensitive, but order must remain the same.
+* Extra columns beyond the optional `tags` column are not allowed.
+* `postalCode` is required.
+* `tags` is optional; when present, multiple tags in one cell must be separated by `;`.
+* Addresses containing commas are supported.
+* Blank lines are ignored.
+* Duplicate rules (same as `add`):
+  a candidate is considered a duplicate if phone matches an existing candidate, or email matches an existing candidate.
+* Duplicate checks are performed against:
+  all existing candidates in the app, and candidates within the same CSV file.
+* Import is all-or-nothing:
+  if any row is invalid, or any duplicate candidate is detected, no candidates are added.
+* Batch size is limited to:
+  `min(25, 999 - current number of candidates)`.
+  If the file exceeds this limit, no candidates are added.
+
+Examples:
+* `addcsv data/candidates.csv`
+* `addcsv 1/2/test.csv`
+
+<div markdown="span" class="alert alert-warning">**Caution:**
+Please do not use Excel to create/edit CSV files for `addcsv`.
+Use a plain text editor to avoid hidden formatting/encoding issues for the headers.
+</div>
 
 ### Listing all candidates : `list`
 
@@ -158,6 +189,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 * cCandidates matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 * The search works on the CURRENT view of the Candidate List, rather than the full Candidate List.
+* The tag counts after filtering are displayed on the **Right Panel** on success, similar to calling `listtags`.
 
 Examples:
 * `find John` returns `john` and `John Doe`
@@ -174,7 +206,7 @@ Format: `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]...`
 * The search works on the CURRENT view of the Candidate List, rather than the full Candidate List.
 * The search requires at least 1 tag/tag combo to work.
 * The tag combo must exist to work, whereas an invalid tag will simply return 0 candidates.
-* The tag counts after filtering are displayed on the **Right Panel** on success.
+* The tag counts after filtering are displayed on the **Right Panel** on success, similar to calling `listtags`.
 
 Examples:
 * `filter tc/ml dev`
@@ -321,14 +353,21 @@ Adds an `Outlet`.
 
 Format: `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE`
 
-- Outlet name must be at most 26 characters long.
-- Outlet address must be at most 35 characters long.
+- All three prefixes `n/`, `a/`, and `pc/` are required.
+- Each prefix should appear at most once.
+- Outlet name must be at most 10 characters long.
+- Outlet address must be at most 18 characters long.
 - Outlet name and address must not contain delimiters.
+- Outlet name cannot be the reserved word `unassigned` (in any capitalization).
+- Outlet postal code must be exactly 6 digits.
+- Duplicate outlet definition:
+  an outlet is considered duplicate only when name, address, and postal code all match an existing outlet.
 
 Examples:
 
 - `outlet add n/FinServ a/Marina Bay pc/018956`
 - `outlet add n/TechCo a/Raffles Place pc/048623`
+  ![result for `outlet add n/TechCo a/Raffles Place pc/048623`](images/OutletAddResult.png)
 
 ### Editing Outlets : `outlet edit`
 
@@ -347,20 +386,42 @@ Assigns a candidate to an `Outlet`.
 
 Format: `outlet assign CANDIDATE_INDEX [OUTLET_INDEX]`
 
-- If `outletIndex` is omitted, the candidate is assigned to the nearest outlet by postal code.
-- If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
-- The outside-Singapore warning is heuristic (keyword-based) and may have false positives/negatives.
+* `CANDIDATE_INDEX` refers to the displayed candidate list.
+* `OUTLET_INDEX` (if provided) refers to the displayed outlet list.
+* At least one outlet must exist.
+* Assumption: outlets are intended to be Singapore locations with valid Singapore postal codes.
+* If `OUTLET_INDEX` is provided, the candidate is assigned directly to that outlet.
+* If `OUTLET_INDEX` is omitted, nearest assignment mode is used:
+  * Candidate/outlet postal codes are looked up in the built-in SG postal dataset (`SG_postal.csv`).
+  * If candidate postal code is found:
+    * nearest outlet is selected using Euclidean distance on latitude/longitude,
+      considering only outlets whose postal code is also found in the dataset.
+    * if no outlet postal code is found in the dataset, one outlet is chosen randomly.
+  * If candidate postal code is not found:
+    * if at least one outlet postal code is also not found in the dataset, one of those outlets is chosen randomly.
+    * otherwise, one outlet is chosen randomly from all outlets.
+* Random fallback selection is non-deterministic.
+* If the SG postal dataset cannot be loaded, command execution fails.
+* If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
+  This warning is heuristic (keyword-based) and may have false positives/negatives.
 
 Examples:
 
-- `outlet assign 2 1`
-- `outlet assign 2`
+- `outlet assign 1 1`
+  ![result for `outlet assign 1 1`](images/OutletAssignResult.png)
+- `outlet assign 1`
+  ![result for `outlet assign 1`](images/OutletAssignResult.png)
+- `outlet assign 4` with non-Singapore-like address warning.
+  ![result for `outlet assign 4` with warning](images/OutletAssignResultWithWarning.png)
 
 ### Unassigning Candidates from Outlets : `outlet unassign`
 
 Unassigns a candidate from their working `Outlet`.
 
 Format: `outlet unassign CANDIDATE_INDEX`
+
+* `CANDIDATE_INDEX` refers to the displayed candidate list.
+* If the candidate is already unassigned, the command keeps the candidate unassigned.
 
 Examples:
 
@@ -372,7 +433,9 @@ Deletes an `Outlet`.
 
 Format: `outlet delete INDEX`
 
-- If candidates are assigned to the deleted outlet, they are automatically unassigned.
+* `INDEX` refers to the displayed outlet list.
+* If candidates are assigned to the deleted outlet, they are automatically unassigned.
+* Auto-unassignment applies across all candidates in the address book (not only filtered/displayed candidates).
 
 Examples:
 
@@ -433,23 +496,23 @@ Action | Format, Examples
 **Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd pc/123456 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEXES {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [T/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEXES {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]... `<br> e.g., `filter t/java t/python tc/ml dev`
 **Compare Candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`
 **List** | `list`
 **Help** | `help`
+**Exit** | `exit`
 **Undo** | `undo`
 **Redo** | `redo`
 **List Tags** | `listtags`
 **Add Tag Combo** | `addtagcombo NAME t/TAG t/TAG [t/TAG]...`<br> e.g., `addtagcombo ml dev t/python t/ml`
 **Delete Tag Combo** | `deletetagcombo INDEX`<br> e.g., `deletetagcombo 1`
 **List Tag Combos** | `listtagcombo`
-**Add by csv** | `addcsv`
+**Add by CSV** | `addcsv PATH_TO_CSV_FILE` <br> e.g., `addcsv data/candidates.csv`
 **Add Outlet** | `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
 **Edit Outlet** | `outlet edit INDEX {[n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]}` <br> e.g., `outlet edit 1 a/One Raffles Place pc/048616`
-**Assign Outlet** | `outlet assign CANDIDATE_INDEX OUTLET_INDEX` <br> e.g., `outlet assign 2 1`
-**Unassign Outlet** | `outlet unassign INDEX` <br> e.g., `outlet unassign 2`
+**Assign Outlet** | `outlet assign CANDIDATE_INDEX [OUTLET_INDEX]` <br> e.g., `outlet assign 2 1` or `outlet assign 2`
+**Unassign Outlet** | `outlet unassign CANDIDATE_INDEX` <br> e.g., `outlet unassign 2`
 **Delete Outlet** | `outlet delete INDEX` <br> e.g., `outlet delete 1`
-**Edit Outlet** | `outlet edit INDEX [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`
