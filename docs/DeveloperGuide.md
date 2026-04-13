@@ -72,7 +72,7 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/AY2
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -113,7 +113,7 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <img src="images/ModelClassDiagram.png" width="450" />
 
@@ -165,33 +165,18 @@ The UML diagram for the design is shown below.
 An example sequence diagram when the command `listtags` is called is shown below.
 
 1. The user enters `listtags` in the UI.
-2. **MainWindow** passes the command to **LogicManager** via `executeCommand("listtags")`.
-3. **LogicManager** forwards the request to **AddressBookParser**, which parses the input and creates a `ListTagsCommand`.
-4. **LogicManager** executes the `ListTagsCommand`.
-5. The command creates a `CommandResult` during execution and returns it to **LogicManager**, which propagates it back to **MainWindow**.
-6. **MainWindow** retrieves the `RightPaneContent` from the `CommandResult` using `getContent()`.
-7. **MainWindow** calls `render()` on the `RightPaneContent` to update the UI.
+2. `MainWindow` passes the command to `LogicManager` via `executeCommand("listtags")`.
+3. `LogicManager` forwards the request to `AddressBookParser`, which parses the input and creates a `ListTagsCommand`.
+4. `LogicManager` executes the `ListTagsCommand`.
+5. The command creates a `CommandResult` during execution and returns it to `LogicManager`, which propagates it back to `MainWindow`.
+6. `MainWindow` retrieves the `RightPaneContent` from the `CommandResult` using `getContent()`.
+7. `MainWindow` calls `render()` on the `RightPaneContent` to update the UI.
 
 <img src="images/RightPaneContentSequenceDiagram.png" width="550" />
 
-#### Design considerations:
+### Help Function That Displays The User Guide
 
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Help Function That Displays The User Guide
-
-#### Proposed Implementation
+#### Implementation
 
 The proposed Help Function is implemented via a Help Window that displays the raw UserGuide.md to the user, to be
 extended as a rendered HTML in the future. It is implemented across the classes HelpWindow and UserGuideParser.
@@ -210,9 +195,9 @@ This separated design was made to make the function's internal logic easier to t
 Manual testing would involve changing the contents, location and possibly format of the user guide, but it is only
 designed to handle correct .md files.
 
-### \[Proposed\] Compare Command
+### Compare Command
 
-#### Proposed Implementation
+#### Implementation
 
 In order to allow the user to view two Person's information at the same time to compare them, the user inputs
 a command of the form: compare Index_1 Index 2, for instance, command 1 2. The indices are one-based indices
@@ -253,11 +238,6 @@ The class and sequence diagrams of the feature is as follows:
 ![CompareCommandClassDiagram](images/CompareCommandClassDiagram.png)
 
 ![CompareCommandSequenceDiagram](images/CompareCommandSequenceDiagram.png)
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -652,56 +632,70 @@ testers are expected to do more *exploratory* testing.
 ### Adding a person
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
    2. Test case: `add n/example e/example@example.com p/123456 pc/123456 a/example`<br>
    Expected: Person is added to the end of the list. Full details of the added person is displayed in the right panel and the status message.
+
    3. Test case: `add n/example e/example@example p/12345 pc/123456 a/example`<br>
    Expected: No person is added. Status prompts that the email format is wrong. Right pane remains the same.
-   4. Test case: `add n/`
+
+   4. Test case: `add n/`<br>
    Expected: No person is added. Status message prompts that the command format is invalid. Right pane remains the same.
+
    5. Other invalid add commands to try : `add`, `add e/`, `...`<br>
    Expected: Similar to 3 or 4, depending on whether all prefixes required are specified, and which prefixes contain invalid values.
 
 ### Adding a tag combo
 
    1. Prerequisites: None
-   2. Test case: `addtagcombo ml dev t/python t/java`
+
+   2. Test case: `addtagcombo ml dev t/python t/java`<br>
    Expected: Tag combo is added to the end of the tag combo list. System message shows the name of the tag combo alongside its associated tags. The tag combo list is displayed on the right pane.
-   3. Test case: `addtagcombo ml_dev t/python t/java`
+
+   3. Test case: `addtagcombo ml_dev t/python t/java`<br>
    Expected: Tag combo is not added to the end of the tag combo list. System message shows that the tag combo name is invalid. Right pane remains the same.
-   4. Test case: `addtagcombo ml dev t/python`
+
+   4. Test case: `addtagcombo ml dev t/python`<br>
    Expected: Tag combo is not added to the end of the tag combo list. System message shows that the tag combo does not contain at least 2 tags.
 
 ### Deleting a tag combo
 
    1. Prerequisites: There must be at least 1 valid tag combo already added. List all tag combos using `listtagcombo` command.
-   2. Test case: `deletetagcombo 1`
+
+   2. Test case: `deletetagcombo 1`<br>
    Expected: Tag combo is deleted from the tag combo list. Details of the tag combo deleted is displayed in the status message, and the right pane shows the remaining tag combo list after deletion.
-   3. Test case: `deletetagcombo 0`
+
+   3. Test case: `deletetagcombo 0`<br>
    Expected: Tag combo is not deleted from the tag combo list. Status message displays that the command format is invalid, as it only accepts positive integers.
 
 ### Filtering by tag/tagcombo
 
    1. Prerequisites: There must be persons in the address book with the tags `python` and `java`. No tag combos yet defined.
-   2. Test case: `filter t/java`
+
+   2. Test case: `filter t/java`<br>
    Expected: The addressbook shows only persons with the `java` tag. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
-   3. Test case: `filter t/java t/python`
+
+   3. Test case: `filter t/java t/python`<br>
    Expected: The addressbook shows only persons with both the `java` and `python` tags. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
-   4. Test case: `filter t/java`, followed by `filter t/python`.
+
+   4. Test case: `filter t/java`, followed by `filter t/python`.<br>
    Expected: Exact same behaviour as previous.
-   5. Test case: `addtagcombo ml dev t/python t/java` followed by `filter tc/ml dev`
+
+   5. Test case: `addtagcombo ml dev t/python t/java` followed by `filter tc/ml dev`<br>
    Expected: Exact same behaviour as previous.
-   6. Test case: `filter tc/ml`
+
+   6. Test case: `filter tc/ml`<br>
    Expected: The addressbook is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
 
 ## Comparing Candidates
-1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`
+   1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`<br>
     Expected: All of the relevant candidates' information are shown in a resizeable right pane.
 
-1. Test negative cases:
-1. Test identical integers: `compare 1 1`
-2. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
-3. Test an integer less than 1: `compare 0 1`, `compare 1 0`
-4. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
+   2. Test negative cases:
+   3. Test identical integers: `compare 1 1`
+   4. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
+   5. Test an integer less than 1: `compare 0 1`, `compare 1 0`
+   6. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
    Expected: In all cases, the relevant error message should be returned in the message box, and no right pane content
    should be shown.
 
@@ -709,5 +703,9 @@ testers are expected to do more *exploratory* testing.
 
 1. Long command names<br>
    Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
-2. Large indices give the wrong error message
+
+2. Large indices give the wrong error message<br>
    When very large indices are provided (e.g., integers that cause overflow), the system displays an incorrect error message indicating an invalid command format instead of signalling that the integer is too large. Fixing this issue would require introducing additional validation checks or flags, and is therefore considered low priority. As the bug stems from overly aggressive input validation and offers a low effort-to-reward ratio, it was not addressed in v1.6.
+
+3. Semantic ambiguity between `filter` and `find`
+   `filter` and `find` commands provide very similar functionality, with `filter` taking in `Tag`s or `TagCombo`s, and `find` taking in names. However, `find` works using partial matching, while `filter` works using case-insensitive full matching. While this overlap in purpose may introduce some redundancy, the commands remain functionally distinct due to their differing input types and matching strategies. As such, the potential for user confusion is limited, and both commands continue to serve valid use cases. Given this distinction, consolidating or refactoring them is considered a low priority, as the current design does not significantly impact usability.
