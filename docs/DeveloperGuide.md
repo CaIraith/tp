@@ -542,7 +542,7 @@ Use case ends.
 **MSS**
 
 1. User requests to add candidate using a csv file.
-2. HireLens checks whether the provided file is in the `.csv` format.
+2. HireLens checks whether the provided file is a `.csv` file in the correct format.
 3. HireLens adds all contacts specified by the csv file.
 4. HireLens displays the full candidate book.
 
@@ -556,15 +556,15 @@ Use case ends.
 
 Use case ends.
 
-1b. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
-1b1. HireLens informs the user that only `.csv` files are accepted and prompts for a valid file.<br>
-1b2. HireLens displays the current view of the candidate book.
+2a. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
+2a1. HireLens informs the user that only `.csv` files are accepted and prompts for a valid file.<br>
+2a2. HireLens displays the current view of the candidate book.
 
 Use case ends.
 
-1c. The specified csv file contains information in the wrong format.<br>
-1c1. HireLens informs the user the csv file contains information in the wrong format.<br>
-1c2. HireLens displays the current view of the candidate book.
+2b. The specified csv file contains information in the wrong format.<br>
+2b1. HireLens informs the user the csv file contains information in the wrong format.<br>
+2b2. HireLens displays the current view of the candidate book.
 
 Use case ends.
 
@@ -718,7 +718,7 @@ testers are expected to do more *exploratory* testing.
 1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`
     Expected: All of the relevant candidates' information are shown in a resizeable right pane.
 
-2.  Test negative cases:
+2. Test negative cases:
 1. Test identical integers: `compare 1 1`
 2. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
 3. Test an integer less than 1: `compare 0 1`, `compare 1 0`
