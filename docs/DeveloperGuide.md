@@ -687,10 +687,10 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: There must be persons in the address book with the tags `python` and `java`. No tag combos yet defined.
 
    2. Test case: `filter t/java`<br>
-   Expected: The addressbook shows only persons with the `java` tag. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
+   Expected: The candidate list shows only persons with the `java` tag. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
 
    3. Test case: `filter t/java t/python`<br>
-   Expected: The addressbook shows only persons with both the `java` and `python` tags. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
+   Expected: The candidate list shows only persons with both the `java` and `python` tags. Status message displays the number of people after the filter has been applied. The right panel displays the frequency of the tags in the filtered candidate list in descending order, similar to the `listtags` command.
 
    4. Test case: `filter t/java`, followed by `filter t/python`.<br>
    Expected: Exact same behaviour as previous.
@@ -699,7 +699,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Exact same behaviour as previous.
 
    6. Test case: `filter tc/ml`<br>
-   Expected: The addressbook is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
+   Expected: The candidate list is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
 
 ### Comparing Candidates
    1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`<br>
