@@ -58,6 +58,7 @@ The image above shows the key UI Components, which are described in detail below
 2. **View**: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
 3. **Tag Combination**: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 4. **Outlet**: An outlet corresponds to a physical location of an office/asset of the company, with the following details: **Name**, **Address** and **Postal Code**.
+5. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 
 ## Features
 
