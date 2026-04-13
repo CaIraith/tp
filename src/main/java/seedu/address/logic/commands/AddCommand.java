@@ -69,7 +69,8 @@ public class AddCommand extends UndoableCommand {
 
         if (model.hasPerson(toAdd)) {
             throw new CommandException(
-                    String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(toAdd)));        }
+                    String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(toAdd)));
+        }
         previousPredicate = model.getFilteredPersonPredicate();
 
         try {

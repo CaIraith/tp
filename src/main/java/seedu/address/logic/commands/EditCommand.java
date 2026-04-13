@@ -116,14 +116,16 @@ public class EditCommand extends UndoableCommand {
             for (Person personInModel : model.getAddressBook().getPersonList()) {
                 if (!personInModel.equals(original) && personInModel.isSamePerson(edited)) {
                     throw new CommandException(
-                            String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(edited)));                  }
+                            String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(edited)));
+                }
             }
         }
 
         for (int i = 0; i < editedPersons.size(); i++) {
             for (int j = i + 1; j < editedPersons.size(); j++) {
                 if (editedPersons.get(i).isSamePerson(editedPersons.get(j))) {
-                    throw new CommandException(MESSAGE_DUPLICATE_PERSON_WITHIN);                  }
+                    throw new CommandException(MESSAGE_DUPLICATE_PERSON_WITHIN);
+                }
             }
         }
 
